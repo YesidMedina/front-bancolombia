@@ -3,9 +3,14 @@ import { Amm_im, Email } from "../../interfaces/amm_im";
 
 const API = "http://localhost:8000/api/v1";
 
-export const getAmmIm = async (status:boolean) => {
+export const getAmmImTrue = async (page:any, searchTxt:any) => {
     
-    return await axios.get(`${API}/amm_im?status=${status}`);
+    return await axios.get(`${API}/amm_im?page=${page}&search=${searchTxt}`);
+};
+
+export const getAmmImFalse = async (page:any, searchTxt:any) => {
+    
+    return await axios.get(`${API}/retired?page=${page}&search=${searchTxt}`);
 };
 
 export const createAmmIm = async (amm: Amm_im) => {
@@ -50,9 +55,31 @@ export const deleteEmailAmmIm = async (id: any) => {
     return await axios.delete(`${API}/email/${id}`);
 };
 
+// Dashboard 
+
 export const getDashboardAmmIm = async () => {
     return await axios.get(`${API}/dashboard`);
 };
+
+export const getDashboardAmmImFull = async () => {
+    return await axios.get(`${API}/dashboardfull`);
+};
+
+export const getExcelAmm = async () => {
+    return await axios.get(`${API}/excel`);
+};
+
+// Filters
+
+export const FilterAmmIm = async (page:any, searchTxt: any) => {
+    return await axios.get(`${API}/filter?page=${page}&search=${searchTxt}`);
+};
+
+export const FilterEmailAmmIm = async (searchTxt: any) => {
+    return await axios.get(`${API}/filter_email?search=${searchTxt}`);
+};
+
+
 
 
 

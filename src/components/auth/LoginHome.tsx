@@ -1,44 +1,64 @@
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FaRegEye } from "react-icons/fa";
 import Fondo from "../../assets/fondologin.jpeg";
+import { getUsers } from "../helpers/ServiceUser";
+
+
+const captcha = import.meta.env.VITE_KEY_RECAPTCHA;
 
 export const LoginHome = () => {
+  let params = useParams();
+  
+  
+  const recaptcha = useRef(null);
+
   const navigate = useNavigate();
 
+  const [captchaLike, setCaptchaLike] = useState(null);
+
   const getUser = async (username: any, password: any) => {
-    const users = await axios.get("http://localhost:8000/api/v1/users");
+    const users = await getUsers();
+    
 
     const user = users.data.find((value: any) => {
       const userExist =
         value.username === username && value.password === password;
-
       return userExist;
     });
     if (user) {
+      localStorage.setItem('user_id', user.id)
       navigate(`/catalogo`);
-      toast.success("Bienvenido");
+      toast.success(`Bienvenido ${username}`);
     } else {
       Swal.fire({
-        title: 'El Usuario no está registrado',
-        text: 'Póngase en contacto con el administrador',
-        icon: 'warning',
-        confirmButtonColor: 'gray',
-        color: 'black'
-
-      })
+        title: "El Usuario no está registrado",
+        text: "Póngase en contacto con el administrador",
+        icon: "warning",
+        confirmButtonColor: "gray",
+        color: "black",
+      });
       toast.error("El Usuario no esta registrado");
+    }
+  };
+
+  const onChange = () => {
+    if (recaptcha.current.getValue()) {
+      setCaptchaLike(true);
     }
   };
 
   const { register, handleSubmit } = useForm();
   const onSubmit = handleSubmit((values: any) => {
-    getUser(values.username, values.password);
-    if (values) {
+    if (recaptcha.current.getValue()) {
+      getUser(values.username, values.password);
+      setCaptchaLike(true);
+    } else {
+      setCaptchaLike(false);
     }
   });
 
@@ -47,8 +67,10 @@ export const LoginHome = () => {
 
   return (
     <>
-      <div style={{ backgroundImage: `url(${Fondo})` }}
-        className="bg-auto bg-no-repeat bg-center " >
+      <div
+        style={{ backgroundImage: `url(${Fondo})` }}
+        className="bg-auto bg-no-repeat bg-center "
+      >
         <div className=" mt-12 h-screen w-full py-12 dark:bg-gray-900">
           <div className="bg-white flex flex-col justify-center dark:bg-gray-900">
             <form
@@ -75,22 +97,38 @@ export const LoginHome = () => {
                   type={shown ? "text" : "password"}
                   required
                   {...register("password", { required: true })}
-                  
                 />
                 <FaRegEye
                   className=" text-gray-500 absolute w-10  mt-11 "
                   onClick={switchShown}
                 />
               </div>
-              <div className="text-center p-4">
-                <button
-                  type="submit"
-                  className="text-black bg-yellow-400 hover:bg-yellow-300  rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
-                >
-                  {" "}
-                  Continuar
-                </button>
+              <div className="mx-20">
+                <ReCAPTCHA
+                  ref={recaptcha}
+                  sitekey={captcha}
+                  onChange={onChange}
+                  required
+                />
               </div>
+
+              {captchaLike === false && (
+                <div className="text-red-600 text-center text-xs">
+                  Captcha obligatorio
+                </div>
+              )}
+
+              {captchaLike === true && (
+                <div className="text-center p-4">
+                  <button
+                    type="submit"
+                    className="text-black bg-yellow-400 hover:bg-yellow-300  rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+                  >
+                    {" "}
+                    Continuar
+                  </button>
+                </div>
+              )}
             </form>
           </div>
         </div>

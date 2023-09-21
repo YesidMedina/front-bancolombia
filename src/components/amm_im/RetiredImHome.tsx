@@ -1,54 +1,49 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { getAmmIm, getAmmImId, updateAmmImId } from "../helpers/ServiceAmmIm";
+import {
+  FilterAmmIm,
+  getAmmImFalse,
+  getAmmImId,
+  updateAmmImId,
+} from "../helpers/ServiceAmmIm";
 import { Amm_im } from "../../interfaces/amm_im";
-import { useNavigate } from "react-router-dom";
 import { Table } from "../commons/Table";
+import { Modal } from "../commons/Modal";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { count } from "console";
 
 export const RetiredImHome = () => {
-  const navigate = useNavigate();
   const [information, setInformation] = useState<Amm_im[]>([]);
-  const [table, setTable] = useState<Amm_im[]>([]);
   const [search, setSearch] = useState("");
+  const [currenPage, setCurrenPage] = useState(1);
+  
+  const [hasMore, setHasMore] = useState(true);
+  const [modalMoreView, setModalMoreView] = useState<{
+    open: boolean;
+    info?: Object;
+  }>({ open: false, info: {} });
 
-  const loadAmmIm = async () => {
-    const respData = await getAmmIm(false);
-    setInformation(respData.data.results.sort());
-    setTable(respData.data.results);
+  const loadAmmImFalse = async (searchTxt: any) => {
+    const respData = await getAmmImFalse(currenPage, searchTxt);
+
+    // const { count, results} = await respData.data;
+
+    setInformation([
+      ...respData.data.results, ...information]);
+      console.log([...information,
+        ...respData.data.results]);
+      
+
+   
+    
+
+    // const pages = [...information].concat(results);
+    // setInformation(pages);
   };
 
   const handleChange = (e: any) => {
     setSearch(e.target.value);
-    filter(e.target.value);
-  };
-
-  const filter = (see: any) => {
-    const result = table.filter((element) => {
-      if (
-        element.id?.toString().toLowerCase().includes(see.toLowerCase()) ||
-        element.service_manager
-          ?.toString()
-          .toLowerCase()
-          .includes(see.toLowerCase()) ||
-        element.name_device
-          ?.toString()
-          .toLowerCase()
-          .includes(see.toLowerCase()) ||
-        element.description
-          ?.toString()
-          .toLowerCase()
-          .includes(see.toLowerCase()) ||
-        element.item_configuration
-          ?.toString()
-          .toLowerCase()
-          .includes(see.toLowerCase()) ||
-        element.ip_divice?.includes(see.toLowerCase())
-      ) {
-        return element;
-      }
-    });
-    console.log(result);
-    setInformation(result);
+    loadAmmImFalse(e.target.value);
   };
 
   const handleDelete = async (id: number, oc_order: any) => {
@@ -58,8 +53,6 @@ export const RetiredImHome = () => {
     resp.data.order_number_oc = order.concat(", ", oc_order);
 
     await updateAmmImId(id, resp.data);
-
-    loadAmmIm();
   };
 
   const handleClick = (id: any) => {
@@ -77,8 +70,6 @@ export const RetiredImHome = () => {
       confirmButtonColor: "red",
       denyButtonColor: "blue",
     }).then((response) => {
-      console.log(response);
-
       if (response.isConfirmed) {
         Swal.fire(
           "Ya se ingreso el servicio",
@@ -93,8 +84,8 @@ export const RetiredImHome = () => {
   };
 
   useEffect(() => {
-    loadAmmIm();
-  }, []);
+    loadAmmImFalse(currenPage);
+  }, [currenPage]);
 
   return (
     <>
@@ -109,79 +100,103 @@ export const RetiredImHome = () => {
             onChange={handleChange}
           />
         </div>
-
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-16 ">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <Table
-              titleE=" "
-              title="ID"
-              title1="Herramienta"
-              title2="Filial"
-              title3="Servicio"
-              title4="Descripción"
-              title5="Nombre Dispositivo"
-              title6="IP"
-              title7="Correo"
-              title8="OC"
-            />
-            <tbody>
-              {information?.map((info) => {
-                return (
-                  <tr
-                    className="bg-white border-b  hover:bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-gray-200"
-                    key={info.id}
-                  >
-                    {info.status === true ? (
-                      <input className="w-2 h-2 ml-1 bg-green-700 rounded-lg" />
-                    ) : (
-                      <input className="w-2 h-2 ml-1 bg-red-800 rounded-lg" />
-                    )}
-                    <td className="px-2 py-2 text-xs font-bold">{info.id}</td>
-                    <td className="px-2 py-2 truncate capitalize">
-                      {info.tool}
-                    </td>
-                    <td className="px-2 py-2 capitalize">{info.filial}</td>
-                    <td className="px-2 py-2 capitalize">
-                      {info.service_manager}
-                    </td>
-                    <td>
-                      <p className="px-2 py-2 w-80 truncate ...">
-                        {" "}
-                        {info.description}
-                      </p>
-                    </td>
-                    <td className="px-2 py-2 truncate capitalize">
-                      {info.name_device}
-                    </td>
-                    <td className="px-2 py-2">{info.ip_divice}</td>
-                    <td className="px-2 py-2">{info.email}</td>
-                    <td>
-                      <p className="px-2 py-2 w-28 truncate ...">
-                        {info.order_number_oc}
-                      </p>
-                    </td>
-                    <td className="px-2 py-2 text-right">
-                      <button
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                        onClick={() => navigate(`/vista/${info.id}`)}
+        
+          <InfiniteScroll
+            dataLength={information.length}
+            next={() => setCurrenPage(currenPage + 1)}
+            hasMore={hasMore}
+            loader={
+              <div className="mx-auto w-44 h-20">
+               
+                  
+                
+              </div>
+            }
+            scrollableTarget="scroll-table"
+          >
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-16 ">
+              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <Table
+                  titleE=" "
+                  title="ID"
+                  title1="Herramienta"
+                  title2="Filial"
+                  title3="Servicio"
+                  title4="Descripción"
+                  title5="Nombre Dispositivo"
+                  title6="IP"
+                  title7="Correo"
+                  title8="OC"
+                />
+                <tbody>
+                  {information?.map((info) => {
+                    return (
+                      <tr
+                        className="bg-white border-b  hover:bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-gray-200"
+                        key={info.id}
                       >
-                        Ver
-                      </button>
-                      <button
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                        onClick={() => handleClick(info.id)}
-                      >
-                        {info.status ? false : true}
-                        Activar
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                        {info.status === true ? (
+                          <input className="w-2 h-2 ml-1 bg-green-700 rounded-lg" />
+                        ) : (
+                          <input className="w-2 h-2 ml-1 bg-red-800 rounded-lg" />
+                        )}
+                        <td className="px-2 py-2 text-xs font-bold">
+                          {info.id}
+                        </td>
+                        <td className="px-2 py-2 truncate capitalize">
+                          {info.tool}
+                        </td>
+                        <td className="px-2 py-2 capitalize">{info.filial}</td>
+                        <td className="px-2 py-2 capitalize">
+                          {info.service_manager}
+                        </td>
+                        <td>
+                          <p className="px-2 py-2 w-80 truncate ...">
+                            {" "}
+                            {info.description}
+                          </p>
+                        </td>
+                        <td className="px-2 py-2 truncate capitalize">
+                          {info.name_device}
+                        </td>
+                        <td className="px-2 py-2">{info.ip_divice}</td>
+                        <td className="px-2 py-2">{info.email}</td>
+                        <td>
+                          <p className="px-2 py-2 w-28 truncate ...">
+                            {info.order_number_oc}
+                          </p>
+                        </td>
+                        <td className="px-2 py-2 text-right">
+                          <button
+                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                            onClick={() =>
+                              setModalMoreView({ open: true, info })
+                            }
+                          >
+                            Ver
+                          </button>
+                          <button
+                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
+                            onClick={() => handleClick(info.id)}
+                          >
+                            {info.status ? false : true}
+                            Activar
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </InfiniteScroll>
         </div>
-      </div>
+      
+      <Modal
+        open={modalMoreView.open}
+        onclose={() => setModalMoreView({ open: false, info: {} })}
+        info={modalMoreView.info}
+      />
     </>
   );
 };

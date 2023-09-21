@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, redirect } from "react-router-dom";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Email } from "../../interfaces/amm_im";
@@ -79,8 +79,8 @@ export const CreateEmailIm = () => {
 
   return (
     <>
-      <div className=" w-1/2 rounded-lg p-6 mx-auto my-24 shadow-lg shadow-gray-800 border-2 border-gray-300">
-        <form onSubmit={handleSubmit}>
+      <div className=" w-1/2 rounded-lg p-6 mx-auto my-24 shadow-lg shadow-gray-800 border-2 border-gray-300 bg-gray-300">
+        <form onSubmit={handleSubmit} >
           <div className="mx-12 py-12 ">
             <div>
               <div className="relative mb-6">

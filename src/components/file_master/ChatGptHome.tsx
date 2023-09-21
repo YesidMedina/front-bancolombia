@@ -49,7 +49,7 @@
 import OpenAI from "openai";
 
 import { useState } from "react";
-const apiKey = "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";
+const apiKey = import.meta.env.VITE_KEY_OPENAI;
 
 const openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
 

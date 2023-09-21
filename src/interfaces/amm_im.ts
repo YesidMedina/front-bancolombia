@@ -11,7 +11,7 @@ export interface Amm_im {
   global_collection: string;
   ic_configuration: string;
   id: number;
-  id_user: number;
+  id_user: number | string;
   impact: string;
   intervalo: string;
   ip_divice: string;
@@ -27,9 +27,11 @@ export interface Amm_im {
   special_rule: string;
   spectrum_soi: string;
   status: boolean;
+  maintenance: boolean;
   sub_service: string;
   tool: string;
-  action: string
+  action: string,
+  updated_at: string
 }
 
 export interface Email {

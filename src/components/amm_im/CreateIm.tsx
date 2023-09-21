@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Amm_im } from "../../interfaces/amm_im";
 import {
@@ -14,7 +14,7 @@ type InputChange = ChangeEvent<
 >;
 
 export const CreateIm = () => {
-  const navigate = useNavigate();
+  let navigate = useNavigate();
   const params = useParams();
 
   const initialForm = {
@@ -30,7 +30,7 @@ export const CreateIm = () => {
     filial: "",
     global_collection: "",
     ic_configuration: "",
-    id_user: 0,
+    id_user: '' ,
     impact: "",
     intervalo: "",
     ip_divice: "",
@@ -47,14 +47,23 @@ export const CreateIm = () => {
     spectrum_soi: "",
     sub_service: "",
     status: true,
+    maintenance: false,
     tool: "",
     id: 0,
+    updated_at: "",
   };
 
   const [info, setInfo] = useState<Amm_im>(initialForm);
+  console.log(info);
 
-  const handleInput = (e: InputChange) => {
-    setInfo({ ...info, [e.target.name]: e.target.value });
+  const handleInput = (e: any) => {
+    if (e.target.name === "maintenance" && e.target.checked) {
+      setInfo({ ...info, [e.target.name]: true });
+    } else if (e.target.name === "maintenance" && !e.target.checked) {
+      setInfo({ ...info, [e.target.name]: false });
+    } else {
+      setInfo({ ...info, [e.target.name]: e.target.value });
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -64,18 +73,20 @@ export const CreateIm = () => {
       await createAmmIm(info);
       Swal.fire({
         title: "Que bien parce!!!",
-        text: "Los datos fueron registrados correctamente",
+        text: `Los datos fueron registrados correctamente con el id ${info.id}`,
         icon: "success",
         confirmButtonColor: "gray",
         color: "black",
+        
       });
       toast.success("Archivo guardado");
       setInfo(initialForm);
+      
     } else {
       await updateAmmImId(params.id, info);
       Swal.fire({
         title: "Mijo... Excelente!",
-        text: "Los cambios fueron exitósos",
+        text: `Los cambios fueron exitósos ID ${info.id}`,
         icon: "success",
         confirmButtonColor: "gray",
         color: "black",
@@ -116,7 +127,9 @@ export const CreateIm = () => {
       spectrum_soi,
       sub_service,
       status,
+      maintenance,
       tool,
+      updated_at,
     } = resp.data;
     setInfo({
       alert_generation,
@@ -149,7 +162,9 @@ export const CreateIm = () => {
       spectrum_soi,
       sub_service,
       status,
+      maintenance,
       tool,
+      updated_at,
     });
   };
 
@@ -159,10 +174,19 @@ export const CreateIm = () => {
 
   return (
     <>
-      <div className=" w-10/12 rounded-lg p-6 mx-auto my-6 shadow-lg shadow-gray-800 border-2 border-gray-300 dark:bg-gray-900 dark:text-gray-200">
+      <div className="mx-36 py-12 bg-gray-200 dark:bg-gray-900">
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-3 gap-4 ">
             <div>
+              {params.id && info.maintenance === true ? (
+                <div className="text-white bg-violet-600 hover:bg-yellow-300 mb-2  rounded-lg text-sm px-5 w-20">
+                  <p className="">{info.id}</p>
+                </div>
+              ) : (
+                <div className="text-black bg-green-600 hover:bg-yellow-300 mb-2  rounded-lg text-sm px-5 w-20">
+                  <p className="">{info.id}</p>
+                </div>
+              )}
               <div className="relative mb-6">
                 <input
                   type="number"
@@ -177,7 +201,7 @@ export const CreateIm = () => {
 
               <div className="relative mb-6">
                 <select
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400"
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400"
                   onChange={handleInput}
                   name="tool"
                   value={info.tool}
@@ -196,7 +220,7 @@ export const CreateIm = () => {
               </div>
               <div className="relative mb-6">
                 <select
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400"
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400"
                   onChange={handleInput}
                   name="global_collection"
                   value={info.global_collection}
@@ -232,7 +256,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400  "
+                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400  "
                   onChange={handleInput}
                   name="filial"
                   value={info.filial}
@@ -243,7 +267,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400  "
+                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400  "
                   onChange={handleInput}
                   name="service_manager"
                   value={info.service_manager}
@@ -254,7 +278,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400  "
+                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400  "
                   onChange={handleInput}
                   name="sub_service"
                   value={info.sub_service}
@@ -265,7 +289,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   name="monitor_resource"
                   value={info.monitor_resource}
@@ -276,7 +300,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   name="service_optional"
                   value={info.service_optional}
@@ -299,7 +323,7 @@ export const CreateIm = () => {
             <div>
               <div className="relative mb-6">
                 <select
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400"
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400"
                   onChange={handleInput}
                   name="environment"
                   value={info.environment}
@@ -316,7 +340,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.platform}
                   name="platform"
@@ -328,7 +352,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.rol}
                   name="rol"
@@ -339,7 +363,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.name_device}
                   name="name_device"
@@ -350,7 +374,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.ip_divice}
                   name="ip_divice"
@@ -362,7 +386,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.baseline}
                   name="baseline"
@@ -373,7 +397,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.item_configuration}
                   name="item_configuration"
@@ -384,7 +408,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.ic_configuration}
                   name="ic_configuration"
@@ -396,7 +420,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.alert_generation}
                   name="alert_generation"
@@ -407,7 +431,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.intervalo}
                   name="intervalo"
@@ -421,7 +445,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.action}
                   name="action"
@@ -433,7 +457,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.alert_hours}
                   name="alert_hours"
@@ -445,7 +469,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.major}
                   name="major"
@@ -457,7 +481,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.critical}
                   name="critical"
@@ -469,7 +493,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.email}
                   name="email"
@@ -481,7 +505,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.impact}
                   name="impact"
@@ -493,7 +517,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.special_rule}
                   name="special_rule"
@@ -505,7 +529,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.details}
                   name="details"
@@ -516,7 +540,7 @@ export const CreateIm = () => {
 
               <div className="relative mb-6">
                 <select
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3  text-black dark:text-gray-400"
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-2  text-black dark:text-gray-400"
                   placeholder="Spectrum/SOI"
                   onChange={handleInput}
                   value={info.spectrum_soi}
@@ -524,7 +548,7 @@ export const CreateIm = () => {
                   required
                 >
                   <option value="" disabled selected>
-                    Seleccione si tiene Spectrum SOI
+                    Seleccione si tiene Spectrum
                   </option>
                   <option value="Si">Si</option>
                   <option value="No">No</option>
@@ -534,7 +558,7 @@ export const CreateIm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black dark:text-gray-400 "
+                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.order_number_oc}
                   name="order_number_oc"
@@ -544,6 +568,24 @@ export const CreateIm = () => {
               </div>
             </div>
           </div>
+          {params.id ? (
+            <div className="flex justify-end">
+              <span className="mr-2">Mantenimiento</span>
+              <label className="relative inline-flex items-center mr-5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={info.maintenance}
+                  onChange={handleInput}
+                  name="maintenance"
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  No / Si
+                </span>
+              </label>
+            </div>
+          ) : null}
 
           {params.id ? (
             <button
@@ -551,6 +593,7 @@ export const CreateIm = () => {
               className="text-black bg-yellow-400 hover:bg-yellow-300 py-2  rounded-lg text-sm px-5 .5 mx-auto"
             >
               Actualizar
+              
             </button>
           ) : (
             <button
@@ -558,6 +601,7 @@ export const CreateIm = () => {
               className="text-black bg-yellow-400 hover:bg-yellow-300 py-2  rounded-lg text-sm px-5 .5 mx-auto"
             >
               Guardar
+             
             </button>
           )}
         </form>

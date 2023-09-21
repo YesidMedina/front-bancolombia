@@ -1,4 +1,4 @@
-import { ChatGptHome } from "../components/auth/ChatGptHome";
+import { ChatGptHome } from "../components/file_master/ChatGptHome";
 import { Navbar } from "../components/commons/Navbar";
 import Logo from "../assets/logo.png";
 

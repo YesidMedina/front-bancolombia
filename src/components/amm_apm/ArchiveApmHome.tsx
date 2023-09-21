@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { getAmmApm, deleteAmmApmId } from "../helpers/ServiceAmmApm";
 import { Amm_apm } from "../../interfaces/amm_apm";
-import { Modal } from "../commons/Modal";
 import { useNavigate } from "react-router-dom";
 import { Table } from "../commons/Table";
 
@@ -160,7 +159,7 @@ export const ArchiveApmHome = () => {
                     <td className="px-2 py-2">{info.email}</td>
                     <td className="px-2 py-2">{info.order_number_oc}</td>
                     <td className="px-2 py-2 text-right">
-                      <button
+                      {/* <button
                         onClick={() => setModal(true)}
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
@@ -170,7 +169,7 @@ export const ArchiveApmHome = () => {
                           onClose={() => setModal(false)}
                           onClick={`${info.id}`}
                         />
-                      </button>
+                      </button> */}
                       <button
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
                         onClick={() => navigate(`/update_apm/${info.id}`)}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Email } from "../../interfaces/amm_im";
-import { deleteEmailAmmIm, getEmailAmmIm } from "../helpers/ServiceAmmIm";
+import { FilterEmailAmmIm, deleteEmailAmmIm, getEmailAmmIm } from "../helpers/ServiceAmmIm";
 import { Table } from "../commons/Table";
 import { useNavigate } from "react-router-dom";
 
@@ -36,29 +36,15 @@ export const EmailImHome = () => {
     filter(e.target.value);
   };
 
-  const filter = (bomba: any) => {
-    const result = table.filter((element) => {
-      if (
-        element.id
-          .toString()
-          .toLowerCase()
-          .includes(bomba.toLowerCase()) ||
-        element.group_email
-          .toString()
-          .toLowerCase()
-          .includes(bomba.toLowerCase()) ||
-        element.name.toString().toLowerCase().includes(bomba.toLowerCase())
-      ) {
-        return element;
-      }
-    });
-    setInformation(result);
+  const filter = async (searchTxt: any) => {
+    const resp = await FilterEmailAmmIm(searchTxt);
+    setTimeout(() => {
+      setInformation(resp.data.results);
+    }, 300);
   };
 
   const handleDelete = async (id: number) => {
-     await deleteEmailAmmIm(id);
-    
-
+     await deleteEmailAmmIm(id);   
     loadAmmIm();
   };
 
@@ -108,11 +94,11 @@ export const EmailImHome = () => {
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-32">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <Table
-              title= 'ID'
-              title1="Grupo de correo"
-              title2="Nombre"
-              title3="Correo de notificación"
-              title4="Orden de cambio"
+              titleE='ID'           
+              title="Grupo de correo"
+              title1="Nombre"
+              title2="Correo de notificación"
+              title3="Orden de cambio"
             />
             <tbody>
               {page.map((info) => {
