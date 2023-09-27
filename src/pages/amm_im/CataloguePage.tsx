@@ -3,6 +3,7 @@ import { CatalogueHome } from "../../components/file_master/CatalogueHome";
 import Logo from "../../assets/logo.png";
 
 export const CataloguePage = () => {
+
   return (
     <>
       <div className="">

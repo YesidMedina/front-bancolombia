@@ -15,9 +15,10 @@ import { Table } from "../commons/Table";
 import { Modal } from "../commons/Modal";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getUserId, getUsers } from "../helpers/ServiceUser";
-import { Divider } from "@tremor/react";
+import jwt_decode from "jwt-decode";
 
 export const ArchiveImHome = () => {
+
   const navigate = useNavigate();
   const [information, setInformation] = useState<Amm_im[]>([]);
   const [search, setSearch] = useState();
@@ -25,12 +26,13 @@ export const ArchiveImHome = () => {
   const [endPage, setEndPage] = useState(null);
   const [uploadExcel, setUploadExcel] = useState();
   const [hasMore, setHasMore] = useState(true);
-  const [user, setUser] = useState();
   const [modalMoreView, setModalMoreView] = useState<{
     open: boolean;
     info?: Object;
   }>({ open: false, info: {} });
+
   const [arrayInfo, setArrayInfo] = useState([]);
+  const [userInfo, setUserInfo] = useState();
 
   const loadAmmImTrue = async (page: any, searchTxt: any) => {
     if (searchTxt !== "") {
@@ -45,23 +47,13 @@ export const ArchiveImHome = () => {
     }
   };
 
-  const reload = () => {
-    window.location.reload();
+  const userId = async () => {
+    const resp = localStorage.getItem("token");
+    const decode = jwt_decode(resp);
+    const respData = await getUserId(decode.id);
+    setUserInfo(respData.data.is_staff);
+    console.log(respData.data.is_staff);
   };
-
-  const [userInfo, setUserInfo] = useState();
-  const userId = localStorage.getItem("user_id");
-
-  const userData = async (id: any) => {
-    const resp = await getUserId(id);
-    setUserInfo(resp.data.status);
-  };
-
-  useEffect(() => {
-    userData(userId);
-  }, []);
-
-  console.log(userInfo);
 
   const handleChange = (e: any) => {
     loadAmmImTrue(1, e.target.value);
@@ -69,7 +61,6 @@ export const ArchiveImHome = () => {
 
   const handleDelete = async (id: number, oc_order: any) => {
     const resp = await getAmmImId(id);
-
     const order = resp.data.order_number_oc;
     resp.data.status = false;
     resp.data.order_number_oc = order.concat(", ", oc_order);
@@ -110,6 +101,7 @@ export const ArchiveImHome = () => {
       if (response.isConfirmed) {
         Swal.fire("Ya se eliminó", `Registro ID ${id}`, "success");
         handleDelete(id, response.value);
+        
         deleteCheckbox(response.value);
       } else if (response.isDenied) {
         return Swal.fire("Ojo!!...", "No me asuste", "info");
@@ -129,8 +121,13 @@ export const ArchiveImHome = () => {
     setArrayInfo((previousInfo) => [...previousInfo, arrayInfo]);
   };
 
+  const reload = () => {
+    window.location.reload();
+  };
+
   useEffect(() => {
     getUsers();
+    userId();
     loadAmmImTrue(currenPage, "");
   }, [currenPage]);
 
@@ -235,37 +232,39 @@ export const ArchiveImHome = () => {
                       </td>
                       <td className="px-2 py-2 text-right">
                         <div>
-                        <button
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                          onClick={() => setModalMoreView({ open: true, info })}
-                        >
-                          Ver
-                        </button>
+                          <button
+                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                            onClick={() =>
+                              setModalMoreView({ open: true, info })
+                            }
+                          >
+                            Ver
+                          </button>
 
-                        {userInfo === "admin" && (
-                          <>
-                            <button
-                              className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                              onClick={() => navigate(`/update/${info.id}`)}
-                            >
-                              Editar
-                            </button>
-                            <button
-                              className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                              onClick={() => handleClick(info.id)}
-                            >
-                              Eliminar
-                            </button>
+                          {userInfo === true && (
+                            <>
+                              <button
+                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
+                                onClick={() => navigate(`/update/${info.id}`)}
+                              >
+                                Editar
+                              </button>
+                              <button
+                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
+                                onClick={() => handleClick(info.id)}
+                              >
+                                Eliminar
+                              </button>
 
-                            <input
-                              onClick={() => clickCheckBox(info)}
-                              id="link-checkbox"
-                              type="checkbox"
-                              value=""
-                              className="ml-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                          </>
-                        )}
+                              <input
+                                onClick={() => clickCheckBox(info)}
+                                id="link-checkbox"
+                                type="checkbox"
+                                value=""
+                                className="ml-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                              />
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>

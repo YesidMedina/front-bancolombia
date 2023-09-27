@@ -3,7 +3,6 @@ import Logo from "../../assets/logo.png";
 import { Navbar } from "../../components/commons/Navbar";
 
 export const CreateImPage = () => {
- 
   return (
     <>
       <Navbar

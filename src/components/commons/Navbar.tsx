@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUserId } from "../helpers/ServiceUser";
+import jwt_decode from "jwt-decode";
 
 const date: Date = new Date();
 const now = date.toLocaleTimeString("en-US");
@@ -7,18 +8,20 @@ const now = date.toLocaleTimeString("en-US");
 export const Navbar = (props: any) => {
   const [userInfo, setUserInfo] = useState();
   const [userAvatar, setUserAvatar] = useState();
-  const userId = localStorage.getItem("user_id");
+  const [userEmail, setUserEmail] = useState();
+  const [close, setClose] = useState();
 
-  const userData = async (id: any) => {
-    const resp = await getUserId(id);
-    console.log(resp.data);
-    
-    setUserInfo(resp.data.username);
-    setUserAvatar(resp.data.username.substring(0, 1).toUpperCase());
+  const userId = async () => {
+    const resp = localStorage.getItem("token");
+    const decode = jwt_decode(resp);
+    const respData = await getUserId(decode.id);
+    setUserInfo(respData.data);
+    setUserEmail(respData.data.email);
+    setUserAvatar(respData.data.username);
   };
 
   useEffect(() => {
-    userData(userId);
+    userId();
   }, []);
 
   return (
@@ -50,6 +53,7 @@ export const Navbar = (props: any) => {
               {now}
             </a>
             <a
+              // onClick={() => closeSesion()}
               href="/"
               className="text-sm  text-blue-600 dark:text-blue-500 hover:underline"
             >
@@ -61,7 +65,7 @@ export const Navbar = (props: any) => {
                 {userAvatar}
               </span>
             </a>
-            <span className="text-xs ml-2">{userInfo}</span>
+            <span className="text-xs ml-2">{userEmail}</span>
           </div>
         </div>
       </nav>

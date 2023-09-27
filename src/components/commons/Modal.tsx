@@ -13,7 +13,7 @@ export const Modal: React.FC<propType> = ({ open, onclose, info }) => {
         onClick={onclose}
       >
         <div
-          className={` rounded-lg shadow p-6 transition-all w-11/12 bg-gray-400 dark:bg-gray-900
+          className={` rounded-lg shadow p-6 transition-all w-11/12 border-black border-4 dark:border-gray-300 bg-gray-400 dark:bg-gray-900
         ${open ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
           onClick={(e) => e.stopPropagation()}
         >

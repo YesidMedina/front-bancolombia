@@ -8,9 +8,12 @@ import Dynatrace from "../../assets/dynatrace.png";
 import Banco from "../../assets/banco1.png";
 
 
+
+
 export const CatalogueHome = () => {
 
-
+ 
+  
   return (
     <>
       <div className="grid lg:gap-3 lg:grid-cols-3 sm:grid-cols-1 sm:gap-1 p-4 px-12 mx-auto bg-yellow-200 bg-gradient-to-r from-gray-400 dark:bg-gray-900">

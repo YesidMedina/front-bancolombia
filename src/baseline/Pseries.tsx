@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Amm_im } from "../../interfaces/amm_im";
+import { Amm_im } from "../interfaces/amm_im";
 import {
   createAmmIm,
   getAmmImId,
   updateAmmImId,
-} from "../helpers/ServiceAmmIm";
+} from "../components/helpers/ServiceAmmIm";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
@@ -13,7 +13,7 @@ type InputChange = ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >;
 
-export const CreateIm = () => {
+export const Pseries = () => {
   let navigate = useNavigate();
   const params = useParams();
 
@@ -416,7 +416,7 @@ export const CreateIm = () => {
                   value={info.item_configuration}
                   name="item_configuration"
                   placeholder="Tipo ITEM configuración"
-                  required
+                  
                 />
               </div>
               <div className="relative mb-6">

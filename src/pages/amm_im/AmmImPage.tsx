@@ -3,7 +3,6 @@ import { Navbar } from "../../components/commons/Navbar";
 import Logo from "../../assets/logo.png";
 
 export const AmmImPage = () => {
-  
 
   return (
     <>

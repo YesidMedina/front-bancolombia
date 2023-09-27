@@ -1,7 +1,7 @@
 import { Children, useEffect, useState } from "react";
 import { ProtectedRoute } from "../components/commons/ProtectedRoute";
 
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "../pages/amm_im/LoginPage";
 import { AmmImPage } from "../pages/amm_im/AmmImPage";
 import { CataloguePage } from "../pages/amm_im/CataloguePage";
@@ -30,36 +30,53 @@ import { RetiredAmmCloudPage } from "../pages/amm_cloud/RetiredAmmCloudPage";
 // CHATGPT
 
 import { ChatGptPage } from "../pages/ChatGptPage";
-
-import { getUsers } from "../components/helpers/ServiceUser";
+import { useLocalStorage } from "react-use";
 
 export const AppRouter = () => {
-  const [user, setUser] = useState(null);
+  
+  // const [user, setUser] = useState('')
+  // const clave =() => {
+  //  const resp =  localStorage.getItem('token')
+  //   setUser(resp)
+  //   console.log(resp);
 
-  const login = async () => {
-    const resp = await getUsers();
-    setUser(resp.data);
-  };
+  // }
+  const [user, setUser] = useLocalStorage('token')
+  console.log(user);
+  
 
-  useEffect(() => {
-    login();
-  }, []);
+   useEffect(() => {
+
+    
+
+  }, [user])
 
   return (
     <>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route element={<ProtectedRoute user={user} />}></Route>
-        <Route path="/catalogo" element={<CataloguePage />} />
+        <Route
+          element={
+            <ProtectedRoute canActivate={user} />
+          }
+          
+        >
+          
+          <Route path="/amm_im" element={<AmmImPage />} />
+          <Route path="/create_im" element={<CreateImPage />} />
+          <Route path="/retired" element={<RetiredAmmImPage />} />
 
-        <Route path="/amm_im" element={<AmmImPage />} />
-        <Route path="/create_im" element={<CreateImPage />} />
+
+        </Route>
+        <Route path="/catalogo" element={<CataloguePage />} />
+        
+        
 
         <Route path="/update/:id" element={<CreateImPage />} />
         <Route path="/email" element={<EmailAmmImPage />} />
         <Route path="/create_email_im" element={<CreateEmailAmmImPage />} />
         <Route path="/update_email/:id" element={<CreateEmailAmmImPage />} />
-        <Route path="/retired" element={<RetiredAmmImPage />} />
+        
         <Route path="/dashboard_amm_im" element={<DashboardAmmImPage />} />
       </Routes>
 

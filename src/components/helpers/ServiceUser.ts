@@ -8,7 +8,40 @@ export const getUsers = async () => {
     return await axios.get(`${API}/users`);
 };
 
-export const getUserId = async (id:any) => {
+export const createLogin = async (user: Users) => {
+    try {
+        const resp = await axios.post(`${API}/login`, user);
+        console.log(resp);
+        return resp
+        
+    } catch (error) {
+        console.error(error)
+        
+    }
     
-    return await axios.get(`${API}/users/${id}`);
+   
+};
+
+export const Logout = async () => {
+    
+    return await axios.post(`${API}/logout`);
+};
+
+
+
+
+
+ export const getUserId = async (id:any) => {
+    
+     return await axios.get(`${API}/users/${id}`);
+ };
+
+export const getUserAuthorized = async () => {
+    
+    return await axios.get(`${API}/authorized`);
+};
+
+export const getUserToken = async (id:any) => {
+    
+    return await axios.get(`${API}/token/${id}`);
 };

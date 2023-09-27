@@ -1,7 +1,10 @@
 const date: Date = new Date();
 const now = date.toLocaleTimeString("en-US");
 
+
 export const NavbarHome = (props: any) => {
+
+  
   return (
     <div>
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
