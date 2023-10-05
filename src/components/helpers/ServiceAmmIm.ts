@@ -22,11 +22,11 @@ export const getAmmImId = async (id: any) => {
 };
 
 export const updateAmmImId = async (id: any, amm: Amm_im) => {
-    return await axios.patch(`${API}/amm_im/${id}`, amm);
+    return await axios.put(`${API}/amm_im/${id}`, amm);
 };
 
 export const updateSeveralAmmIm = async (arrayToUpdate:Array<{}>, oc_order:any) => {
-    return await axios.put(`${API}/amm_im_several`, {arrayInfo:arrayToUpdate, oc_order});
+    return await axios.put(`${API}/several`, {arrayInfo:arrayToUpdate, oc_order});
 };
 
 export const deleteAmmImId = async (id: any) => {
@@ -35,8 +35,8 @@ export const deleteAmmImId = async (id: any) => {
 
 // Email
 
-export const getEmailAmmIm = async () => {
-    return await axios.get(`${API}/email`);
+export const getEmailAmmIm = async (page:any, searchTxt:any) => {
+    return await axios.get(`${API}/email?page=${page}&search=${searchTxt}`);
 };
 
 export const getEmailAmmImId = async (id: any) => {
@@ -64,20 +64,32 @@ export const getDashboardAmmIm = async () => {
 export const getDashboardAmmImFull = async () => {
     return await axios.get(`${API}/dashboardfull`);
 };
-
-export const getExcelAmm = async () => {
-    return await axios.get(`${API}/excel`);
+export const getDashboardFilial = async () => {
+    return await axios.get(`${API}/dashboard_filial`);
 };
+
+
+// BaseLIne
+
+export const getBaseLine = async () => {
+    return await axios.get(`${API}/baseline`);
+};
+
+
+
+// export const getExcelAmm = async () => {
+//     return await axios.get(`${API}/excel`);
+// };
 
 // Filters
 
-export const FilterAmmIm = async (page:any, searchTxt: any) => {
-    return await axios.get(`${API}/filter?page=${page}&search=${searchTxt}`);
-};
+// export const FilterAmmIm = async (page:any, searchTxt: any) => {
+//     return await axios.get(`${API}/filter?page=${page}&search=${searchTxt}`);
+// };
 
-export const FilterEmailAmmIm = async (searchTxt: any) => {
-    return await axios.get(`${API}/filter_email?search=${searchTxt}`);
-};
+// export const FilterEmailAmmIm = async (searchTxt: any) => {
+//     return await axios.get(`${API}/filter_email?search=${searchTxt}`);
+// };
 
 
 

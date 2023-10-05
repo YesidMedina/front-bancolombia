@@ -1,30 +1,24 @@
-import { useRef } from "react";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { ExcelFile, ExcelSheet, ExColumn } from "react-export-excel";
+// import { ExcelFile, ExcelSheet, ExColumn } from "react-export-excel";
 import {
-  FilterAmmIm,
   getAmmImId,
   getAmmImTrue,
   updateAmmImId,
   updateSeveralAmmIm,
 } from "../helpers/ServiceAmmIm";
 import { Amm_im } from "../../interfaces/amm_im";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Table } from "../commons/Table";
 import { Modal } from "../commons/Modal";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getUserId, getUsers } from "../helpers/ServiceUser";
+import { getUserId } from "../helpers/ServiceUser";
 import jwt_decode from "jwt-decode";
 
 export const ArchiveImHome = () => {
-
   const navigate = useNavigate();
   const [information, setInformation] = useState<Amm_im[]>([]);
-  const [search, setSearch] = useState();
   const [currenPage, setCurrenPage] = useState(1);
-  const [endPage, setEndPage] = useState(null);
-  const [uploadExcel, setUploadExcel] = useState();
   const [hasMore, setHasMore] = useState(true);
   const [modalMoreView, setModalMoreView] = useState<{
     open: boolean;
@@ -43,16 +37,23 @@ export const ArchiveImHome = () => {
       if (respData.data.next === null) {
         setHasMore(false);
       }
-      setInformation([...information, ...respData.data.results]);
+      setInformation([...respData.data.results]);
     }
+  };
+
+  const loadPagination = async (page: any) => {
+    const respData = await getAmmImTrue(page, "");
+    if (respData.data.next === null) {
+      setHasMore(false);
+    }
+    setInformation([...information, ...respData.data.results]);
   };
 
   const userId = async () => {
     const resp = localStorage.getItem("token");
     const decode = jwt_decode(resp);
-    const respData = await getUserId(decode.id);
+    const respData = await getUserId(decode["id"]);
     setUserInfo(respData.data.is_staff);
-    console.log(respData.data.is_staff);
   };
 
   const handleChange = (e: any) => {
@@ -101,8 +102,8 @@ export const ArchiveImHome = () => {
       if (response.isConfirmed) {
         Swal.fire("Ya se eliminó", `Registro ID ${id}`, "success");
         handleDelete(id, response.value);
-        
-        deleteCheckbox(response.value);
+
+        deleteCheckbox(response.value); // esto se debe de cambiar para otro boton aparte
       } else if (response.isDenied) {
         return Swal.fire("Ojo!!...", "No me asuste", "info");
       } else if (response.isDismissed) {
@@ -115,10 +116,12 @@ export const ArchiveImHome = () => {
 
   const deleteCheckbox = (oc_order: any) => {
     handleDeleteCheckbox(arrayInfo, oc_order);
+    console.log(arrayInfo, oc_order);
   };
 
   const clickCheckBox = (arrayInfo: any) => {
     setArrayInfo((previousInfo) => [...previousInfo, arrayInfo]);
+    console.log(arrayInfo);
   };
 
   const reload = () => {
@@ -126,10 +129,12 @@ export const ArchiveImHome = () => {
   };
 
   useEffect(() => {
-    getUsers();
-    userId();
-    loadAmmImTrue(currenPage, "");
+    loadPagination(currenPage);
   }, [currenPage]);
+
+  useEffect(() => {
+    userId();
+  }, []);
 
   return (
     <>
@@ -150,25 +155,28 @@ export const ArchiveImHome = () => {
         </div>
 
         <div>
-          <div className="flex flex-col items-end sm:mr-12 -mt-8">
-            <button
-              onClick={() => handleClick(information.find((index) => index.id))}
-              className="bg-red-400 rounded-lg w-20 h-8 text-white mr-8"
-            >
-              Eliminar
-            </button>
-          </div>
+          {userInfo === true && (
+            <div className="flex flex-col items-end sm:mr-12 -mt-8">
+              <button
+                onClick={() =>
+                  handleClick(information.find((index) => index.id))
+                }
+                className="bg-red-400 rounded-lg w-20 h-8 text-white mr-8"
+              >
+                Eliminar
+              </button>
+            </div>
+          )}
         </div>
 
         <InfiniteScroll
           dataLength={information.length}
           next={() => setCurrenPage(currenPage + 1)}
-          onScroll={search}
           hasMore={hasMore}
           loader={<div>Loading</div>}
         >
-          <div className=" overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-16 ">
-            <table className="overflow-y-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <div className=" overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-4">
+            <table className="overflow-y-auto w-full text-xs text-left text-gray-500 dark:text-gray-400">
               <Table
                 titleE=" "
                 title="Id"
@@ -176,7 +184,7 @@ export const ArchiveImHome = () => {
                 title2="Filial"
                 title3="Servicio"
                 title4="Descripción"
-                title5="Nombre Dispositivo"
+                title5="N.. Dispositivo"
                 title6="IP"
                 title7="Correo"
                 title8="OC"
@@ -201,26 +209,26 @@ export const ArchiveImHome = () => {
                       </td>
                       <td className="px-2 py-2 capitalize">{info.filial}</td>
                       <td>
-                        <p className="px-2 py-2 w-40 truncate ...">
+                        <p className="px-2 py-2 w-28 truncate ...">
                           {" "}
                           {info.service_manager}
                         </p>
                       </td>
                       <td>
-                        <p className="px-2 py-2 w-40 truncate ...">
+                        <p className="px-2 py-2 w-28 truncate ...">
                           {" "}
                           {info.description}
                         </p>
                       </td>
                       <td>
-                        <p className="px-2 py-2 w-40 truncate ...">
+                        <p className="px-2 py-2 w-28 truncate ...">
                           {" "}
                           {info.name_device}
                         </p>
                       </td>
                       <td className="px-2 py-2">{info.ip_divice}</td>
                       <td>
-                        <p className="px-2 py-2 w-36 truncate ...">
+                        <p className="px-2 py-2 w-28 truncate ...">
                           {" "}
                           {info.email}
                         </p>

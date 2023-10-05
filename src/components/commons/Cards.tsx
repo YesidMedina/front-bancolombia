@@ -1,7 +1,5 @@
-
-
 export const Cards = (props: any) => (
-  <div className=" ml-4 py-2"> 
+  <div className=" ml-4 py-2">
     <a
       href={props.link}
       className="flex flex-col items-center sm:items-center bg-gray-300 border border-gray-500 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100"
@@ -15,9 +13,7 @@ export const Cards = (props: any) => (
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-600">
           {props.title}
         </h5>
-        <p className="mb-3 font-normal text-gray-700 ">
-          {props.description}
-        </p>
+        <p className="mb-3 font-normal text-gray-700 ">{props.description}</p>
       </div>
     </a>
   </div>

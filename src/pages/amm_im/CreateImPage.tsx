@@ -1,6 +1,7 @@
 import { CreateIm } from "../../components/amm_im/CreateIm";
 import Logo from "../../assets/logo.png";
 import { Navbar } from "../../components/commons/Navbar";
+import { BaseLineHome } from "../../components/amm_im/BaseLineHome";
 
 export const CreateImPage = () => {
   return (

@@ -15,7 +15,7 @@ type InputChange = ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >;
 
-export const Pseries = () => {
+export const Solaris = () => {
   let navigate = useNavigate();
   const params = useParams();
 
@@ -41,8 +41,8 @@ export const Pseries = () => {
     monitor_resource: "",
     name_device: "",
     order_number_oc: "",
-    platform: "Pseries",
-    rol: "",
+    platform: "pSeries",
+    rol: "Plataforma Pseries",
     service_manager: "",
     service_optional: "",
     special_rule: "",
@@ -205,7 +205,7 @@ export const Pseries = () => {
                 }
               <div className="relative mb-4">
                 <input
-                 
+                  
                   className=" w-32 rounded border border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400"
                   onChange={handleInput}
                   name="id_user"
@@ -447,7 +447,7 @@ export const Pseries = () => {
                     selected
                   ></option>
                   <option value="FileSystem">FileSystem</option>
-                  <option value="Paginación">Paginación</option>
+                  <option value="Paginación">Performans</option>
                 </select>
               </div>
               <div className="bg-red-200 relative mb-4">
@@ -464,16 +464,9 @@ export const Pseries = () => {
                   </option>
 
                   <option value="/">/</option>
-                  <option value="/opt">/opt</option>
-                  <option value="/usr">/usr</option>
                   <option value="/tmp">/tmp</option>
-                  <option value="/var">/var</option>
-                  <option value="/home">/home</option>
-                  <option value="/syslog">/syslog</option>
-                  <option value="/logs">/logs</option>
-                  <option value="/nmon">/nmon</option>
-                  <option value="/admin">/admin</option>
-                  <option value="%utilización">%utilización</option>
+                  <option value="/export/home">/export/home</option>
+                  <option value="CPU">CPU</option>
                 </select>
               </div>
 
@@ -553,9 +546,9 @@ export const Pseries = () => {
                     Mayor
                   </option>
 
-                  <option value=">=90%">&gt;=90%</option>
+                  <option value=">=80%">&gt;=80%</option>
                   
-                  <option value=">85%=30min.">&gt;85%=30min.</option>
+                  <option value=">80%=60min.">&gt;80%=60min.</option>
                  
                 </select>
               </div>
@@ -573,8 +566,8 @@ export const Pseries = () => {
                     Critical
                   </option>
 
-                  <option value=">=95%">&gt;=95%.</option>
-                  <option value=">60%=30min.">&gt;60%=30min.</option>
+                  <option value=">=90%">&gt;=90%.</option>
+                  <option value=">90%=60min.">&gt;90%=60min.</option>
                 </select>
               </div>
 

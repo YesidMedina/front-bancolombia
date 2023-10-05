@@ -11,6 +11,9 @@ export default {
     transparent: "transparent",
     current: "currentColor",
     extend: {
+      height: {
+        '142': '32rem',
+      
       colors: {
         tremor: {
           brand: {
@@ -70,6 +73,7 @@ export default {
             strong: "#f9fafb", // gray-50
             inverted: "#000000", // black
           },
+        },
         },
       },
       boxShadow: {

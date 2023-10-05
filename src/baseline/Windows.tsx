@@ -15,14 +15,14 @@ type InputChange = ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >;
 
-export const Pseries = () => {
+export const Windows = () => {
   let navigate = useNavigate();
   const params = useParams();
 
   const initialForm = {
     alert_generation: "",
     alert_hours: "",
-    baseline: "Pseries",
+    baseline: "Windows",
     critical: "",
     description: "",
     details: "",
@@ -41,7 +41,7 @@ export const Pseries = () => {
     monitor_resource: "",
     name_device: "",
     order_number_oc: "",
-    platform: "Pseries",
+    platform: "Windows",
     rol: "",
     service_manager: "",
     service_optional: "",
@@ -182,7 +182,7 @@ export const Pseries = () => {
 
   return (
     <>
-    <div className="sm:-mt-12 sm:flex sm:justify-center">
+      <div className="sm:-mt-12 sm:flex sm:justify-center">
         <a className="-mt-2 inline-flex items-center justify-center w-8 h-8 ml-8 overflow-hidden bg-red-200 rounded-full"></a>
         <p className="text-xs">Los campos en rojo son obligatorios y seleccionables de linea base</p>
       </div>
@@ -205,7 +205,7 @@ export const Pseries = () => {
                 }
               <div className="relative mb-4">
                 <input
-                 
+               
                   className=" w-32 rounded border border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400"
                   onChange={handleInput}
                   name="id_user"
@@ -387,9 +387,10 @@ export const Pseries = () => {
                     Rol
                   </option>
                   <option value="Plataforma Windows-Linux Bancolombia">
-                    Plataforma Pseries
+                    Plataforma Windows-Linux Bancolombia
                   </option>
-                  
+                  <option value="Base de Datos">Base de Datos</option>
+                  <option value="Panoramica_Cliente">Panoramica_Cliente</option>
                 </select>
               </div>
               <div className="relative mb-4">
@@ -425,9 +426,10 @@ export const Pseries = () => {
                   <option value="" disabled selected>
                     Linea base
                   </option>
-                 
+                  <option value="Windows">Windows</option>
+                  <option value="Linux"> Linux </option>
                   <option value="Pseries">Pseries</option>
-                 
+                  <option value="Solaris">Solaris</option>
                   <option value="N/A">N/A</option>
                 </select>
               </div>
@@ -445,9 +447,10 @@ export const Pseries = () => {
                     value=""
                     disabled
                     selected
-                  ></option>
-                  <option value="FileSystem">FileSystem</option>
-                  <option value="Paginación">Paginación</option>
+                  >Tipo item de configuración</option>
+                  <option value="%Utilizacion">%Utilizacion</option>
+                  <option value="Disponibilidad">Disponibilidad</option>
+                  <option value="Disponibilidad">Busy</option>
                 </select>
               </div>
               <div className="bg-red-200 relative mb-4">
@@ -463,17 +466,10 @@ export const Pseries = () => {
                     Item configuracion
                   </option>
 
-                  <option value="/">/</option>
-                  <option value="/opt">/opt</option>
-                  <option value="/usr">/usr</option>
-                  <option value="/tmp">/tmp</option>
-                  <option value="/var">/var</option>
-                  <option value="/home">/home</option>
-                  <option value="/syslog">/syslog</option>
-                  <option value="/logs">/logs</option>
-                  <option value="/nmon">/nmon</option>
-                  <option value="/admin">/admin</option>
-                  <option value="%utilización">%utilización</option>
+                  <option value="CPU">CPU</option>
+                  <option value="Memoria Física">Memoria Física</option>
+                  <option value="Disco Lógico">Disco Lógico</option>
+                  <option value="Disco Lógico">Watch-Memoria-</option>
                 </select>
               </div>
 
@@ -553,10 +549,11 @@ export const Pseries = () => {
                     Mayor
                   </option>
 
-                  <option value=">=90%">&gt;=90%</option>
-                  
+                  <option value=">80%=60min.">&gt;80%=60min.</option>
+                  <option value=">90%=30min.">&gt;90%=30min.</option>
+                  <option value=">28GB">&gt;28GB</option>
                   <option value=">85%=30min.">&gt;85%=30min.</option>
-                 
+                  <option value="N/A">N/A</option>
                 </select>
               </div>
 
@@ -573,8 +570,14 @@ export const Pseries = () => {
                     Critical
                   </option>
 
-                  <option value=">=95%">&gt;=95%.</option>
-                  <option value=">60%=30min.">&gt;60%=30min.</option>
+                  <option value=">90%=10min.">&gt;90%=10min.</option>
+                  <option value=">90%=20min.">&gt;90%=20min.</option>
+                  <option value=">90%=30min.">&gt;90%=30min.</option>
+                  <option value=">95%=30min.">&gt;95%=30min.</option>
+                  <option value=">85%=10min.">&gt;85%=10min.</option>
+                  <option value=">30GB">&gt;30GB</option>
+                  <option value=">85%=30min.">&gt;85%=30min.</option>
+                  <option value="N/A">N/A</option>
                 </select>
               </div>
 

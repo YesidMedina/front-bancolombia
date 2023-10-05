@@ -1,8 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Amm_im } from "../interfaces/amm_im";
-import jwt_decode from "jwt-decode";
-import { getUserId } from "../components/helpers/ServiceUser";
 import {
   createAmmIm,
   getAmmImId,
@@ -10,19 +8,17 @@ import {
 } from "../components/helpers/ServiceAmmIm";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import jwt_decode from "jwt-decode";
+import { getUserId } from "../components/helpers/ServiceUser";
 
-type InputChange = ChangeEvent<
-  HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
->;
-
-export const Pseries = () => {
+export const CreateServiceIm = () => {
   let navigate = useNavigate();
   const params = useParams();
 
   const initialForm = {
     alert_generation: "",
     alert_hours: "",
-    baseline: "Pseries",
+    baseline: "",
     critical: "",
     description: "",
     details: "",
@@ -41,7 +37,7 @@ export const Pseries = () => {
     monitor_resource: "",
     name_device: "",
     order_number_oc: "",
-    platform: "Pseries",
+    platform: "",
     rol: "",
     service_manager: "",
     service_optional: "",
@@ -74,6 +70,7 @@ export const Pseries = () => {
       setInfo({ ...info, [e.target.name]: e.target.value });
     }
   };
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -182,15 +179,11 @@ export const Pseries = () => {
 
   return (
     <>
-    <div className="sm:-mt-12 sm:flex sm:justify-center">
-        <a className="-mt-2 inline-flex items-center justify-center w-8 h-8 ml-8 overflow-hidden bg-red-200 rounded-full"></a>
-        <p className="text-xs">Los campos en rojo son obligatorios y seleccionables de linea base</p>
-      </div>
-      <div className="mx-20 py-16  dark:bg-gray-900">
+      <div className="mx-20 py-8  dark:bg-gray-900">
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-3 gap-4 text-xs">
             <div>
-            {params.id && 
+                {params.id && 
               <div>
                 {params.id && info.maintenance === true ? (
                   <div className="text-white bg-violet-600 hover:bg-yellow-300 mb-2  rounded-lg text-sm px-5 w-20">
@@ -205,13 +198,13 @@ export const Pseries = () => {
                 }
               <div className="relative mb-4">
                 <input
-                 
+                  type='text'
                   className=" w-32 rounded border border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400"
                   onChange={handleInput}
                   name="id_user"
                   value={userInfo}
                   placeholder="ID usuario"
-                  required
+                 
                 />
               </div>
 
@@ -374,23 +367,16 @@ export const Pseries = () => {
                 />
               </div>
 
-              <div className="bg-red-200 relative mb-4">
-                <select
+              <div className="relative mb-4">
+                <input
+                  type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.rol}
                   name="rol"
                   placeholder="Rol"
                   required
-                >
-                  <option className="text-gray-300" value="" disabled selected>
-                    Rol
-                  </option>
-                  <option value="Plataforma Windows-Linux Bancolombia">
-                    Plataforma Pseries
-                  </option>
-                  
-                </select>
+                />
               </div>
               <div className="relative mb-4">
                 <input
@@ -425,56 +411,34 @@ export const Pseries = () => {
                   <option value="" disabled selected>
                     Linea base
                   </option>
-                 
+                  <option value="Windows">Windows</option>
+                  <option value="Linux"> Linux </option>
                   <option value="Pseries">Pseries</option>
-                 
+                  <option value="Solaris">Solaris</option>
                   <option value="N/A">N/A</option>
                 </select>
               </div>
-              <div className="bg-red-200 relative mb-4">
-                <select
+              <div className="relative mb-4">
+                <input
+                  type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.item_configuration}
                   name="item_configuration"
                   placeholder="Tipo ITEM configuración"
                   required
-                >
-                  <option
-                    className="text-gray-300"
-                    value=""
-                    disabled
-                    selected
-                  ></option>
-                  <option value="FileSystem">FileSystem</option>
-                  <option value="Paginación">Paginación</option>
-                </select>
+                />
               </div>
-              <div className="bg-red-200 relative mb-4">
-                <select
-                  className=" w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
+              <div className="relative mb-4">
+                <input
+                  type="text"
+                  className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.ic_configuration}
                   name="ic_configuration"
                   placeholder="ITEM configuración"
                   required
-                >
-                  <option className="text-gray-300" value="" disabled selected>
-                    Item configuracion
-                  </option>
-
-                  <option value="/">/</option>
-                  <option value="/opt">/opt</option>
-                  <option value="/usr">/usr</option>
-                  <option value="/tmp">/tmp</option>
-                  <option value="/var">/var</option>
-                  <option value="/home">/home</option>
-                  <option value="/syslog">/syslog</option>
-                  <option value="/logs">/logs</option>
-                  <option value="/nmon">/nmon</option>
-                  <option value="/admin">/admin</option>
-                  <option value="%utilización">%utilización</option>
-                </select>
+                />
               </div>
 
               <div className="relative mb-4">
@@ -540,42 +504,28 @@ export const Pseries = () => {
                 />
               </div>
 
-              <div className="bg-red-200 relative mb-4">
-                <select
+              <div className="relative mb-4">
+                <input
+                  type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.major}
                   name="major"
                   placeholder="Mayor"
                   required
-                >
-                  <option className="text-gray-300" value="" disabled selected>
-                    Mayor
-                  </option>
-
-                  <option value=">=90%">&gt;=90%</option>
-                  
-                  <option value=">85%=30min.">&gt;85%=30min.</option>
-                 
-                </select>
+                />
               </div>
 
-              <div className="bg-red-200 relative mb-4">
-                <select
+              <div className="relative mb-4">
+                <input
+                  type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
                   onChange={handleInput}
                   value={info.critical}
                   name="critical"
                   placeholder="Critical"
                   required
-                >
-                  <option className="text-gray-300" value="" disabled selected>
-                    Critical
-                  </option>
-
-                  <option value=">=95%">&gt;=95%.</option>
-                  <option value=">60%=30min.">&gt;60%=30min.</option>
-                </select>
+                />
               </div>
 
               <div className="relative mb-4">
@@ -657,18 +607,18 @@ export const Pseries = () => {
             </div>
           </div>
           {params.id ? (
-            <div className="flex justify-end">
-              <span className="mr-2">Mantenimiento</span>
+            <div className="flex justify-end text-xs">
+              <span className="mr-2 mt-1">Mantenimiento</span>
               <label className="relative inline-flex items-center mr-5 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={info.maintenance}
                   onChange={handleInput}
                   name="maintenance"
-                  className="sr-only peer"
+                  className="sr-only peer "
                 />
-                <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                <div className="w-11 h-6 bg-gray-500 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                <span className="ml-3 text-xs font-medium text-gray-900 dark:text-gray-300">
                   No / Si
                 </span>
               </label>
@@ -678,14 +628,14 @@ export const Pseries = () => {
           {params.id ? (
             <button
               type="submit"
-              className="text-black bg-yellow-400 hover:bg-yellow-300 py-2  rounded-lg text-sm px-5 .5 mx-auto"
+              className="text-black bg-yellow-400 hover:bg-yellow-300 py-2  rounded-lg text-xs px-5 .5 mx-auto"
             >
               Actualizar
             </button>
           ) : (
             <button
               type="submit"
-              className="text-black bg-yellow-400 hover:bg-yellow-300 py-2  rounded-lg text-sm px-5 .5 mx-auto"
+              className="text-black bg-yellow-400 hover:bg-yellow-300 py-2  rounded-lg text-xs px-5 .5 mx-auto"
             >
               Guardar
             </button>

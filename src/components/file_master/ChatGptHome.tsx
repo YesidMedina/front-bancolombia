@@ -77,7 +77,7 @@ export const ChatGptHome = () => {
 
   return (
     <>
-      <div className="w-1/2 h-90  bg-gray-300 border border-gray-600 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mx-auto my-12">
+      <div className="mx-12 h-90  bg-gray-300 border border-gray-600 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 my-12">
         <h5 className="text-xl font-medium text-gray-900 dark:text-white text-center mb-8 ">
           Preguntas monitoreo inteligencia artificial
         </h5>

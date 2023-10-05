@@ -11,7 +11,7 @@ export interface Amm_im {
   global_collection: string;
   ic_configuration: string;
   id: number;
-  id_user: number | string;
+  id_user: number | string ;
   impact: string;
   intervalo: string;
   ip_divice: string;
@@ -39,5 +39,18 @@ export interface Email {
   group_email: string,
   name: string,
   email_notification: string,
+  order_oc: string,
+}
+
+export interface BaseLine {
+  id: number,
+  name_baseline: string,
+  type_configuration: string,
+  item_configuration: string,
+  critical: string,
+  major: string,
+  group_support: string,
+  impact: string,
+  details: string,
   order_oc: string,
 }

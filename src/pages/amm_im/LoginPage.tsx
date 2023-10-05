@@ -5,6 +5,7 @@ import Logo from "../../assets/logo.png";
 export const LoginPage = () => {
   return (
     <>
+   
       <NavbarHome
         title="Herramientas de monitoreo"
         image={Logo}
