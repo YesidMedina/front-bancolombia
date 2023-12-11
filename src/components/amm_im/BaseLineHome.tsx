@@ -23,8 +23,8 @@ export const BaseLineHome = () => {
 
   return (
     <>
-      <div className="mt-16 ">
-        <div className=" overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-20 border border-gray-300 h-[32rem]">
+      <div className="mt-8 ">
+        <div className=" overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-4 border border-gray-300 h-[32rem]">
           <table className="overflow-y-auto w-full text-xs text-left text-gray-500 dark:text-gray-400">
             <Table
               className={"fixed"}
@@ -45,7 +45,7 @@ export const BaseLineHome = () => {
                     className="bg-gray-300 border-b  hover:bg-gray-400 text-gray-900 dark:bg-gray-900 dark:text-gray-400"
                     key={index}
                   >
-                    <td className="px-2 py-2 text-xs font-bold ">
+                    <td className="px-2 py-2 text-xs font-bold w-28 truncate ...">
                       {info.name_baseline}
                     </td>
                     <td className="px-2 py-2 truncate capitalize">
@@ -55,25 +55,25 @@ export const BaseLineHome = () => {
                       {info.item_configuration}
                     </td>
                     <td>
-                      <p className="px-2 py-2 w-40 truncate ...">
+                      <p className="px-2 py-2 w-28 truncate ...">
                         {" "}
                         {info.major}
                       </p>
                     </td>
                     <td>
-                      <p className="px-2 py-2 w-40 truncate ...">
+                      <p className="px-2 py-2 w-28 truncate ...">
                         {" "}
                         {info.critical}
                       </p>
                     </td>
                     <td>
-                      <p className="px-2 py-2 w-40 truncate ...">
+                      <p className="px-2 py-2 w-28 truncate ...">
                         {" "}
                         {info.group_support}
                       </p>
                     </td>
                     <td>
-                      <p className="px-2 py-2 w-40 truncate ...">
+                      <p className="px-2 py-2 w-28 truncate ...">
                         {info.impact}
                       </p>
                     </td>

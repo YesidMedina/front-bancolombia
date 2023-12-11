@@ -1,4 +1,5 @@
 export interface Amm_cloud {
+  id: number;
   id_user: number;
   tool: string;
   global_collection: string;
@@ -24,8 +25,10 @@ export interface Amm_cloud {
   test_location: string;
   spectrum: string;
   status: boolean;
+  maintenance: boolean;
   order_number_oc: string;
   state_newrelic: string;
+  created_at: string
 }
 
 export interface Email {
@@ -34,4 +37,21 @@ export interface Email {
   name: string;
   email_notification: string;
   order_oc: string;
+}
+
+export interface Synthetic {
+  id: number;
+  name_alert: string;
+  item_configuration: string;
+  passed: string;
+  item_configuration_nqrl: string;
+  value_item: string;
+  major: string;
+  critical: string;
+  token: string;
+  parameter_token: string;
+  detail: string;
+  status: boolean;
+  order_oc: string;
+  created_at: string
 }

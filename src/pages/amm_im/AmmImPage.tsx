@@ -20,10 +20,13 @@ export const AmmImPage = () => {
         linkTwo="/retired"
         menuThree="Correos"
         linkThree="/email"
-        menuFive="Crear servicio"
-        linkFive="/create_im"
         menuFour="Dashboard"
         linkFour="/dashboard_amm_im"
+        menuFive="Crear servicio"
+        linkFive="/create_im"
+        menuSix="Crear correo"
+        linkSix="/create_email_im"
+        
       />
       <ArchiveImHome />
     </>

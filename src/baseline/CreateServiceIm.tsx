@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { Amm_im } from "../interfaces/amm_im";
 import {
@@ -71,32 +71,31 @@ export const CreateServiceIm = () => {
     }
   };
 
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!params.id) {
       await createAmmIm(info);
       Swal.fire({
-        title: "Que bien parce!!!",
-        text: `Los datos fueron registrados correctamente con el id ${info.id}`,
+        title: "Que bien!!!",
+        text: `Los datos fueron registrados correctamente`,
         icon: "success",
         confirmButtonColor: "gray",
         color: "black",
       });
       toast.success("Archivo guardado");
-      setInfo(initialForm);
+      navigate("/create_im");
     } else {
       await updateAmmImId(params.id, info);
       Swal.fire({
-        title: "Mijo... Excelente!",
+        title: "Excelente!",
         text: `Los cambios fueron exitósos ID ${info.id}`,
         icon: "success",
         confirmButtonColor: "gray",
         color: "black",
       });
+      navigate("/amm_im");
     }
-    navigate("/amm_im");
   };
 
   const getInfo = async (id: any) => {
@@ -173,7 +172,7 @@ export const CreateServiceIm = () => {
   };
 
   useEffect(() => {
-    userId()
+    userId();
     if (params.id) getInfo(params.id);
   }, []);
 
@@ -183,28 +182,28 @@ export const CreateServiceIm = () => {
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-3 gap-4 text-xs">
             <div>
-                {params.id && 
-              <div>
-                {params.id && info.maintenance === true ? (
-                  <div className="text-white bg-violet-600 hover:bg-yellow-300 mb-2  rounded-lg text-sm px-5 w-20">
-                    <p className="">{info.id}</p>
-                  </div>
-                ) : (
-                  <div className="text-black bg-green-600 hover:bg-yellow-300 mb-2  rounded-lg text-sm px-5 w-20">
-                    <p className="">{info.id}</p>
-                  </div>
-                )}
-              </div>
-                }
+              {params.id && (
+                <div>
+                  {params.id && info.maintenance === true ? (
+                    <div className="text-white bg-violet-600 hover:bg-yellow-300 mb-2  rounded-lg text-sm px-5 w-20">
+                      <p className="">{info.id}</p>
+                    </div>
+                  ) : (
+                    <div className="text-black bg-green-600 hover:bg-yellow-300 mb-2  rounded-lg text-sm px-5 w-20">
+                      <p className="">{info.id}</p>
+                    </div>
+                  )}
+                </div>
+              )}
               <div className="relative mb-4">
                 <input
-                  type='text'
+                  type="text"
                   className=" w-32 rounded border border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400"
                   onChange={handleInput}
                   name="id_user"
-                  value={userInfo}
+                  value={info.id_user}
                   placeholder="ID usuario"
-                 
+                  required
                 />
               </div>
 
@@ -617,10 +616,13 @@ export const CreateServiceIm = () => {
                   name="maintenance"
                   className="sr-only peer "
                 />
-                <div className="w-11 h-6 bg-gray-500 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                <span className="ml-3 text-xs font-medium text-gray-900 dark:text-gray-300">
-                  No / Si
-                </span>
+                <div
+                  className="group peer ring-0 bg-green-700  rounded-full outline-none duration-300
+                 after:duration-300 w-16 h-7  shadow-md peer-checked:bg-violet-600  peer-focus:outline-none
+                   after:content-['✖️']  after:rounded-full after:absolute after:bg-gray-50 after:outline-none 
+                   after:h-5 after:w-5 after:top-1 after:left-1 after:flex after:justify-center after:items-center
+                    peer-checked:after:translate-x-8 peer-checked:after:content-['✔️'] peer-hover:after:scale-90"
+                ></div>
               </label>
             </div>
           ) : null}
@@ -633,13 +635,15 @@ export const CreateServiceIm = () => {
               Actualizar
             </button>
           ) : (
-            <button
-              type="submit"
-              className="text-black bg-yellow-400 hover:bg-yellow-300 py-2  rounded-lg text-xs px-5 .5 mx-auto"
-            >
-              Guardar
+            <button className="text-black bg-yellow-400 hover:bg-yellow-300 py-2  rounded-lg text-xs px-5 .5 mx-auto">
+              Guardar y seguir
             </button>
           )}
+          <Link to="/amm_im">
+            <button className="ml-6 text-black bg-yellow-400 hover:bg-yellow-300 py-2  rounded-lg text-xs px-5 .5 mx-auto">
+              Salir
+            </button>
+          </Link>
         </form>
       </div>
     </>

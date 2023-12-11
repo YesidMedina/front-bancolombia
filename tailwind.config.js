@@ -1,3 +1,22 @@
+const plugin = require("tailwindcss/plugin")
+
+const myClass = plugin(function({addUtilities}) {
+  addUtilities({
+    ".my-rotate-y-180":{
+      transform: 'rotateY(180deg)',
+    },
+    ".preserve-3d": {
+      transformStyle: "preserve-3d",
+    },
+    ".perspective": {
+      perspective: "1000px",
+    },
+    ".backface-hidden": {
+      backfaceVisibility: "hidden"
+    }
+  })
+})
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: "class",
@@ -8,6 +27,14 @@ export default {
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+
+    backgroundSize: {
+      'auto': 'auto',
+      'cover': 'cover',
+      'contain': 'contain',
+      '50%': '50%',
+      '16': '4rem',
+    },
     transparent: "transparent",
     current: "currentColor",
     extend: {
@@ -24,6 +51,7 @@ export default {
             emphasis: "#1d4ed8", // blue-700
             inverted: "#ffffff", // white
           },
+
           background: {
             muted: "#f9fafb", // gray-50
             subtle: "#f3f4f6", // gray-100
@@ -132,5 +160,5 @@ export default {
         /^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
     },
   ],
-  plugins: [],
+  plugins: [myClass],
 };

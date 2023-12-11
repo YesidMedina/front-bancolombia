@@ -10,7 +10,7 @@ import {
 import { Amm_im } from "../../interfaces/amm_im";
 import { useNavigate } from "react-router-dom";
 import { Table } from "../commons/Table";
-import { Modal } from "../commons/Modal";
+import { ModalView } from "./ModalView";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { getUserId } from "../helpers/ServiceUser";
 import jwt_decode from "jwt-decode";
@@ -138,12 +138,12 @@ export const ArchiveImHome = () => {
 
   return (
     <>
-      <div className="bg-gray-400 dark:bg-gray-800">
+      <div className="bg-gray-400 h-auto dark:bg-gray-800">
         <div className=" w-1/2 mx-auto mt-4 sticky ">
           <input
             type="search"
             id="search-dropdown"
-            className="block p-2.5 w-full z-20 text-sm text-gray-800 bg-gray-50 rounded-lg  border-2  border-gray-400 "
+            className="block p-2.5 w-full z-20 text-xs text-gray-800 bg-gray-50 rounded-lg  border-2  border-gray-400 "
             placeholder="Buscar por Servicio, Nombre dispositivo ó IP..."
             onChange={handleChange}
           />
@@ -283,10 +283,11 @@ export const ArchiveImHome = () => {
           </div>
         </InfiniteScroll>
       </div>
-      <Modal
+      <ModalView
         open={modalMoreView.open}
         onclose={() => setModalMoreView({ open: false, info: {} })}
         info={modalMoreView.info}
+        
       />
     </>
   );

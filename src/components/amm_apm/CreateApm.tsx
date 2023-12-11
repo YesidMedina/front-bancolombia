@@ -31,9 +31,9 @@ export const CreateApm = () => {
     rol: "",
     name_device: "",
     ip_divice: "",
-    type_confiduration: "",
+    type_configuration: "",
+    item_configuration: "",
     alert_generation: "",
-    status_alert: "",
     metric_configuration: "",
     intervalo: "",
     alert_hours: "",
@@ -45,9 +45,9 @@ export const CreateApm = () => {
     op_critical: "",
     email: "",
     impact: "",
-    special_rule: "",
     details: "",
     spectrum: "",
+    maintenance: false,
     status: true,
     order_number_oc: "",
   };
@@ -100,9 +100,9 @@ export const CreateApm = () => {
       rol,
       name_device,
       ip_divice,
-      type_confiduration,
+      type_configuration,
+      item_configuration,
       alert_generation,
-      status_alert,
       metric_configuration,
       intervalo,
       alert_hours,
@@ -114,10 +114,10 @@ export const CreateApm = () => {
       op_critical,
       email,
       impact,
-      special_rule,
       details,
       spectrum,
       status,
+      maintenance,
       order_number_oc,
     } = resp.data;
     setInfo({
@@ -134,9 +134,9 @@ export const CreateApm = () => {
       rol,
       name_device,
       ip_divice,
-      type_confiduration,
+      type_configuration,
+      item_configuration,
       alert_generation,
-      status_alert,
       metric_configuration,
       intervalo,
       alert_hours,
@@ -148,10 +148,10 @@ export const CreateApm = () => {
       op_critical,
       email,
       impact,
-      special_rule,
       details,
       spectrum,
       status,
+      maintenance,
       order_number_oc,
     });
   };
@@ -162,14 +162,28 @@ export const CreateApm = () => {
 
   return (
     <>
-      <div className=" w-10/12 rounded-lg p-6 mx-auto my-6 shadow-lg shadow-gray-800 border-2 border-gray-300">
+      <div className=" mx-20 py-16 dark:bg-gray-900">
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-3 gap-4 ">
+          <div className="grid grid-cols-3 gap-4 text-xs">
             <div>
-              <div className="relative mb-6">
+              {params.id && (
+                <div>
+                  {params.id && info.maintenance === true ? (
+                    <div className="text-white bg-violet-600 hover:bg-yellow-300 mb-2  rounded-lg text-sm px-5 w-20">
+                      <p className="">{info.id}</p>
+                    </div>
+                  ) : (
+                    <div className="text-black bg-green-600 hover:bg-yellow-300 mb-2  rounded-lg text-sm px-5 w-20">
+                      <p className="">{info.id}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="relative mb-4">
                 <input
                   type="number"
-                  className=" w-32 rounded border-2 border-gray-500 bg-transparent px-3 text-black  "
+                  className=" w-32 rounded border py-1 border-gray-500 bg-transparent px-3 text-black  "
                   onChange={handleInput}
                   name="id_user"
                   value={info.id_user}
@@ -178,9 +192,9 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <select
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3  text-black"
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3  text-black"
                   onChange={handleInput}
                   name="global_collection"
                   value={info.global_collection}
@@ -198,10 +212,10 @@ export const CreateApm = () => {
                 </select>
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black  "
+                  className=" w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black  "
                   onChange={handleInput}
                   name="filial"
                   value={info.filial}
@@ -210,10 +224,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black  "
+                  className=" w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black  "
                   onChange={handleInput}
                   name="service_manager"
                   value={info.service_manager}
@@ -221,10 +235,10 @@ export const CreateApm = () => {
                   required
                 />
               </div>
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black  "
+                  className=" w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black  "
                   onChange={handleInput}
                   name="sub_service"
                   value={info.sub_service}
@@ -233,10 +247,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black  "
+                  className=" w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black  "
                   onChange={handleInput}
                   name="gestor_broker"
                   value={info.gestor_broker}
@@ -245,10 +259,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black  "
+                  className=" w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black  "
                   onChange={handleInput}
                   name="monitor_resource"
                   value={info.monitor_resource}
@@ -257,9 +271,9 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <textarea
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 py-4 text-black "
+                  className="w-full rounded border border-gray-500 bg-transparent px-3 py-4 text-black "
                   onChange={handleInput}
                   name="description"
                   value={info.description}
@@ -268,12 +282,12 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <select
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black"
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black"
                   onChange={handleInput}
                   name="environment"
-                  value={info.rol}
+                  value={info.environment}
                   required
                 >
                   <option value="" disabled selected>
@@ -284,10 +298,12 @@ export const CreateApm = () => {
                   <option value="Desarrollo">Desarrollo</option>
                 </select>
               </div>
+            </div>
 
-              <div className="relative mb-6">
+            <div>
+              <div className="relative mb-4">
                 <input
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   name="rol"
                   value={info.rol}
@@ -295,13 +311,10 @@ export const CreateApm = () => {
                   required
                 />
               </div>
-            </div>
-
-            <div>
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.name_device}
                   name="name_device"
@@ -310,10 +323,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.ip_divice}
                   name="ip_divice"
@@ -322,12 +335,12 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <select
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3  text-black"
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3  text-black"
                   onChange={handleInput}
-                  name="type_confiduration"
-                  value={info.type_confiduration}
+                  name="type_configuration"
+                  value={info.type_configuration}
                   required
                 >
                   <option className="text-gray-300" value="" disabled selected>
@@ -345,10 +358,22 @@ export const CreateApm = () => {
                 </select>
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
+                  onChange={handleInput}
+                  value={info.item_configuration}
+                  name="item_configuration"
+                  placeholder="Item de configuración"
+                  required
+                />
+              </div>
+
+              <div className="relative mb-4">
+                <input
+                  type="text"
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.alert_generation}
                   name="alert_generation"
@@ -357,21 +382,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
-                  onChange={handleInput}
-                  value={info.status_alert}
-                  name="status_alert"
-                  placeholder="Estado generación de la alerta"
-                  required
-                />
-              </div>
-              <div className="relative mb-6">
-                <input
-                  type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.metric_configuration}
                   name="metric_configuration"
@@ -379,10 +393,10 @@ export const CreateApm = () => {
                   required
                 />
               </div>
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.intervalo}
                   name="intervalo"
@@ -391,10 +405,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.alert_hours}
                   name="alert_hours"
@@ -402,10 +416,10 @@ export const CreateApm = () => {
                   required
                 />
               </div>
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.major}
                   name="major"
@@ -413,10 +427,13 @@ export const CreateApm = () => {
                   required
                 />
               </div>
-              <div className="relative mb-6">
+            </div>
+
+            <div>
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.pot_major}
                   name="pot_major"
@@ -424,13 +441,10 @@ export const CreateApm = () => {
                   required
                 />
               </div>
-            </div>
-
-            <div>
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.op_major}
                   name="op_major"
@@ -439,10 +453,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.critical}
                   name="critical"
@@ -451,10 +465,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.pot_critical}
                   name="pot_critical"
@@ -463,10 +477,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.op_critical}
                   name="op_critical"
@@ -475,10 +489,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.email}
                   name="email"
@@ -487,10 +501,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.impact}
                   name="impact"
@@ -499,10 +513,10 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.details}
                   name="details"
@@ -511,21 +525,9 @@ export const CreateApm = () => {
                 />
               </div>
 
-              <div className="relative mb-6">
-                <input
-                  type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
-                  onChange={handleInput}
-                  value={info.special_rule}
-                  name="special_rule"
-                  placeholder="Rol especial"
-                  required
-                />
-              </div>
-
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <select
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3  text-black"
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3  text-black"
                   placeholder="Spectrum/SOI"
                   onChange={handleInput}
                   value={info.spectrum}
@@ -540,10 +542,10 @@ export const CreateApm = () => {
                 </select>
               </div>
 
-              <div className="relative mb-6">
+              <div className="relative mb-4">
                 <input
                   type="text"
-                  className="w-full rounded border-2 border-gray-500 bg-transparent px-3 text-black "
+                  className="w-full rounded border py-1 border-gray-500 bg-transparent px-3 text-black "
                   onChange={handleInput}
                   value={info.order_number_oc}
                   name="order_number_oc"
@@ -553,6 +555,27 @@ export const CreateApm = () => {
               </div>
             </div>
           </div>
+          {params.id ? (
+            <div className="flex justify-end text-xs">
+              <span className="mr-2 mt-1">Mantenimiento</span>
+              <label className="relative inline-flex items-center mr-5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={info.maintenance}
+                  onChange={handleInput}
+                  name="maintenance"
+                  className="sr-only peer "
+                />
+                <div
+                  className="group peer ring-0 bg-green-700  rounded-full outline-none duration-300
+                 after:duration-300 w-16 h-7  shadow-md peer-checked:bg-violet-600  peer-focus:outline-none
+                   after:content-['✖️']  after:rounded-full after:absolute after:bg-gray-50 after:outline-none 
+                   after:h-5 after:w-5 after:top-1 after:left-1 after:flex after:justify-center after:items-center
+                    peer-checked:after:translate-x-8 peer-checked:after:content-['✔️'] peer-hover:after:scale-90"
+                ></div>
+              </label>
+            </div>
+          ) : null}
 
           {params.id ? (
             <button

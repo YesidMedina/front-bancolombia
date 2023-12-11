@@ -11,8 +11,8 @@ export const CreateEmailAmmApmPage = () => {
         catalogue = 'Catálogo'
         hour="Hora"
         clouse="Cerrar sesión"
-        menu1="Atrás"
-        link1="/email_apm"
+        menuOne="Atrás"
+        linkOne="/email_apm"
       />
 
       <CreateEmailApm />

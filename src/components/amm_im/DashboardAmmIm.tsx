@@ -73,7 +73,7 @@ export const DashboardAmmIm = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 dark:bg-gray-900 w-full">
+      <div className="md:grid md:grid-cols-2 dark:bg-gray-900 md:w-full">
         <div className="mt-12 py-8 px-4 mx-10 md:w-90 border dark:border-gray-200">
           <h1 className=" text-slate-800">Herramientas</h1>
           <ResponsiveContainer aspect={2.4}>
@@ -81,17 +81,17 @@ export const DashboardAmmIm = () => {
               data={information}
               width={500}
               height={300}
-              margin={{ top: 20, right: 10, left: 20, bottom: 5 }}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey={information} />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="Spectrum" fill="#8884d8" />
-              <Bar dataKey="UIM" fill="#EC407A" />
-              <Bar dataKey="ELK" fill="#97A4E8" />
-              <Bar dataKey="OpenShift" fill="#00000" />
+              <Bar dataKey="Spectrum" fill="#8884d8" label={{ position: "top" }} />
+              <Bar dataKey="UIM" fill="#EC407A" label={{ position: "top" }} />
+              <Bar dataKey="ELK" fill="#97A4E8" label={{ position: "top" }} />
+              <Bar dataKey="OpenShift" fill="#00000" label={{ position: "top" }} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -144,7 +144,7 @@ export const DashboardAmmIm = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 dark:bg-gray-900 w-full">
+      <div className="md:grid md:grid-cols-2 dark:bg-gray-900 md:w-full">
         <div className="mt-12 py-6 px-12 mx-10 md:w-90 border dark:border-gray-200">
           <h1 className="text-center -mt-4">Herramientas mas usadas</h1>
           <div className="grid lg:grid-cols-2 ms:grid-cols-1 mt-8">

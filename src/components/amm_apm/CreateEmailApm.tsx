@@ -8,6 +8,8 @@ import {
   updateEmailAmmApmId,
 } from "../helpers/ServiceAmmApm";
 import { toast } from "react-toastify";
+import Fondo from "../../assets/fondoapm.jpg"
+import EmailIcon from "../../assets/mail-modified.svg"
 
 type InputChange = ChangeEvent<HTMLInputElement>;
 
@@ -79,14 +81,22 @@ export const CreateEmailApm = () => {
 
   return (
     <>
-      <div className=" w-1/2 rounded-lg p-6 mx-auto my-24 shadow-lg shadow-gray-800 border-2 border-gray-300">
+    <div
+    style={{ backgroundImage: `url(${Fondo})` }}
+    className="h-screen bg-no-repeat bg-center bg-[length:1600px_800px] py-12"
+    >
+      <div 
+      
+      className="bg-white w-1/2 rounded-lg p-6 mx-auto shadow-lg shadow-gray-800 border border-gray-300  dark:bg-gray-800">
         <form onSubmit={handleSubmit}>
-          <div className="mx-12 py-12 ">
+          <img src={EmailIcon} alt="" className="w-16 mx-auto hover:scale-125 duration-200" />
+          <h1 className="text-center">Grupo de correos APM</h1>
+          <div className="mx-12 py-8 text-xs">
             <div>
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 py-2 text-black  "
+                  className=" w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black  "
                   onChange={handleInput}
                   name="group_email"
                   value={info.group_email}
@@ -98,7 +108,7 @@ export const CreateEmailApm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 py-2 text-black  "
+                  className=" w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black  "
                   onChange={handleInput}
                   name="name"
                   value={info.name}
@@ -109,7 +119,7 @@ export const CreateEmailApm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 py-2 text-black  "
+                  className=" w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black  "
                   onChange={handleInput}
                   name="email_notification"
                   value={info.email_notification}
@@ -120,7 +130,7 @@ export const CreateEmailApm = () => {
               <div className="relative mb-6">
                 <input
                   type="text"
-                  className=" w-full rounded border-2 border-gray-500 bg-transparent px-3 py-2 text-black  "
+                  className=" w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black  "
                   onChange={handleInput}
                   name="order_oc"
                   value={info.order_oc}
@@ -149,6 +159,7 @@ export const CreateEmailApm = () => {
             )}
           </div>
         </form>
+      </div>
       </div>
     </>
   );

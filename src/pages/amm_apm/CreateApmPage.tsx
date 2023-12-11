@@ -9,10 +9,11 @@ export const CreateApmPage = () => {
         title="Crear Servicios AMM_APM"
         image={Logo}
         catalogue = 'Catálogo'
+        linkCatalogue = "/catalogo"
         hour="Hora"
         clouse="Cerrar sesión"
-        menu1="Atrás"
-        link1="/amm_apm"
+        menuOne="Atrás"
+        linkOne="/amm_apm"
       />
 
       <CreateApm />

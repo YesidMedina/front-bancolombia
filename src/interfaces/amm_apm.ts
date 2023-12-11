@@ -12,9 +12,9 @@ export interface Amm_apm {
   rol: string;
   name_device: string;
   ip_divice: string;
-  type_confiduration: string;
+  type_configuration: string;
+  item_configuration: string;
   alert_generation: string;
-  status_alert: string;
   metric_configuration: string;
   intervalo: string;
   alert_hours: string;
@@ -26,9 +26,9 @@ export interface Amm_apm {
   op_critical: string;
   email: string;
   impact: string;
-  special_rule: string;
   details: string;
   spectrum: string;
+  maintenance: boolean;
   status: boolean;
   order_number_oc: string;
 }
@@ -39,4 +39,20 @@ export interface Email {
   name: string;
   email_notification: string;
   order_oc: string;
+}
+export interface Job {
+  id:number;
+  isiries:string;
+  job:string;
+  subsistem:string;
+  instances:string;
+  instances_affectation:string;
+  name_menu:string;
+  group_rise:string;
+  id_divice:string;
+  menu_chksys:string;
+  maintenance:boolean;
+  status:boolean;
+  order_oc:string;
+  updated_at:string
 }

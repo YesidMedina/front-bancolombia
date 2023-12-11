@@ -1,0 +1,188 @@
+type propType = {
+  open: boolean;
+  onclose: () => void;
+  info: any;
+};
+
+export const ModalView: React.FC<propType> = ({ open, onclose, info }) => {
+  return (
+    <div className="w-full sticky">
+      <div
+        className={`fixed inset-0 flex justify-center items-center
+     transition-colors ${open ? "visible" : "invisible"}`}
+        onClick={onclose}
+      >
+        <div
+          className={`rounded-lg shadow p-6 transition-all w-11/12 border-black border-2 dark:border-gray-300 bg-gray-300 dark:bg-gray-900
+          ${open ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            className="absolute top-2 right-2 py-1 px-2 border border-neutral-200 rounded-md text-gray-400
+              bg-white hover:bg-gray-50 hover:text-gray-600"
+            onClick={onclose}
+          >
+            x
+          </button>
+          <div className="">
+            <div className="grid grid-cols-4 gap-4 w-full dark:text-gray-100 text-sm">
+              <div>
+                <div className="relative mb-2">
+                  <h2 className="">ID </h2>
+                  {info.maintenance === true ? (
+                    <p className="bg-violet-700 rounded-lg w-12 h-6 text-white text-center">
+                      {info.id}
+                    </p>
+                  ) : (
+                    <p className="bg-green-600 rounded-lg w-12 h-6 text-white text-center">
+                      {info.id}
+                    </p>
+                  )}
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">ID Usuario</h2>
+                  <p>{info.id_user}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">Colección Global</h2>
+                  <p className="text-gray-600">{info.global_collection}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Filial</h2>
+                  <p className="text-gray-600">{info.filial}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">Servicio</h2>
+                  <p className="text-gray-600">{info.service_manager}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Sub Servicio</h2>
+                  <p className="text-gray-600">{info.sub_service}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Gestor</h2>
+                  <p className="text-gray-600">{info.gestor_broker}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Monitor resource</h2>
+                  <p className="text-gray-600">{info.monitor_resource}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">Descripción</h2>
+                  <p className="text-gray-600">{info.description}</p>
+                </div>
+              </div>
+
+              <div>
+                <div className="relative mb-2">
+                  <h2 className="">Ambiente</h2>
+                  <p className="text-gray-600">{info.environment}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Rol</h2>
+                  <p className="text-gray-600">{info.rol}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Nombre dispositivo</h2>
+                  <p className="text-gray-600">{info.name_device}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">IP</h2>
+                  <p className="text-gray-600">{info.ip_divice}</p>
+                </div>
+                <div className="relative mb-6">
+                  <h2 className="">Tipo ITEM Configuración</h2>
+                  <p className="text-gray-600">{info.type_configuration}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">Alerta</h2>
+                  <p className="text-gray-600">{info.alert_generation}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Tipo ITEM Configuración</h2>
+                  <p className="text-gray-600">{info.item_configuration}</p>
+                </div>
+              </div>
+
+              <div>
+                <div className="relative mb-2">
+                  <h2 className="">Configuración metrica</h2>
+                  <p className="text-gray-600">{info.metric_configuration}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">Intervalo</h2>
+                  <p className="text-gray-600">{info.intervalo}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">Horario alerta</h2>
+                  <p className="text-gray-600">{info.alert_hours}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Mayor</h2>
+                  <p className="text-gray-600">{info.major}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">POT Mayor</h2>
+                  <p className="text-gray-600">{info.pot_major}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">OP Mayor</h2>
+                  <p className="text-gray-600">{info.op_major}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">Critica</h2>
+                  <p className="text-gray-600">{info.critical}</p>
+                </div>
+              </div>
+              <div>
+                <div className="relative mb-2">
+                  <h2 className="">POT Crítica</h2>
+                  <p className="text-gray-600">{info.pot_critical}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">OP Crítica</h2>
+                  <p className="text-gray-600">{info.op_critical}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Correo</h2>
+                  <p className="text-gray-600">{info.email}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">Detalle</h2>
+                  <p className="text-gray-600">{info.details}</p>
+                </div>
+
+                <div className="relative mb-2">
+                  <h2 className="">Spectrum</h2>
+                  <p className="text-gray-600">{info.spectrum_soi}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Orden de Cambio</h2>
+                  <p className="text-gray-600">{info.order_number_oc}</p>
+                </div>
+                <div className="relative mb-2">
+                  <h2 className="">Ultima Actualización</h2>
+                  <p className="text-gray-600">{info.updated_at}</p>
+                </div>
+              </div>
+            </div>
+            <div className="relative mb-2 w-full">
+              <h2 className="">Impacto</h2>
+              <p className="text-gray-600">{info.impact}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -1,8 +1,8 @@
-import { Children, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ProtectedRoute } from "../components/commons/ProtectedRoute";
 
-import { Navigate, Route, Routes } from "react-router-dom";
-import { LoginPage } from "../pages/amm_im/LoginPage";
+import { Route, Routes } from "react-router-dom";
+import { LoginPage } from "../pages/LoginPage";
 import { AmmImPage } from "../pages/amm_im/AmmImPage";
 import { CataloguePage } from "../pages/amm_im/CataloguePage";
 import { CreateImPage } from "../pages/amm_im/CreateImPage";
@@ -31,9 +31,12 @@ import { RetiredAmmCloudPage } from "../pages/amm_cloud/RetiredAmmCloudPage";
 
 import { ChatGptPage } from "../pages/ChatGptPage";
 import { useLocalStorage } from "react-use";
+import { JobApmPage } from "../pages/amm_apm/JobApmPage";
+import { RetiredJobPage } from "../pages/amm_apm/RetiredJobPage";
+import { CreateJobPage } from "../pages/amm_apm/CreateJobPage";
+import { DashboardAmmApmPage } from "../pages/amm_apm/DashboardAmmApmPage";
 
 export const AppRouter = () => {
-  
   // const [user, setUser] = useState('')
   // const clave =() => {
   //  const resp =  localStorage.getItem('token')
@@ -41,43 +44,25 @@ export const AppRouter = () => {
   //   console.log(resp);
 
   // }
-  const [user, setUser] = useLocalStorage('token')
-  console.log(user);
-  
+  const [user, setUser] = useLocalStorage("token");
 
-   useEffect(() => {
-
-    
-
-  }, [user])
+  useEffect(() => {}, [user]);
 
   return (
     <>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route
-          element={
-            <ProtectedRoute canActivate={user} />
-          }
-          
-        >
-          
+        <Route path="/catalogo" element={<CataloguePage />} />
+        <Route element={<ProtectedRoute canActivate={user} />}>
           <Route path="/amm_im" element={<AmmImPage />} />
           <Route path="/create_im" element={<CreateImPage />} />
           <Route path="/retired" element={<RetiredAmmImPage />} />
-
-
+          <Route path="/update/:id" element={<CreateImPage />} />
+          <Route path="/email" element={<EmailAmmImPage />} />
+          <Route path="/create_email_im" element={<CreateEmailAmmImPage />} />
+          <Route path="/update_email/:id" element={<CreateEmailAmmImPage />} />
+          <Route path="/dashboard_amm_im" element={<DashboardAmmImPage />} />
         </Route>
-        <Route path="/catalogo" element={<CataloguePage />} />
-        
-        
-
-        <Route path="/update/:id" element={<CreateImPage />} />
-        <Route path="/email" element={<EmailAmmImPage />} />
-        <Route path="/create_email_im" element={<CreateEmailAmmImPage />} />
-        <Route path="/update_email/:id" element={<CreateEmailAmmImPage />} />
-        
-        <Route path="/dashboard_amm_im" element={<DashboardAmmImPage />} />
       </Routes>
 
       <Routes>
@@ -86,11 +71,18 @@ export const AppRouter = () => {
         <Route path="/update_apm/:id" element={<CreateApmPage />} />
         <Route path="/email_apm" element={<EmailAmmApmPage />} />
         <Route path="/create_email_apm" element={<CreateEmailAmmApmPage />} />
+
+        
         <Route
           path="/update_email_apm/:id"
           element={<CreateEmailAmmApmPage />}
         />
         <Route path="/retired_apm" element={<RetiredAmmApmPage />} />
+        <Route path="/jobs" element={<JobApmPage />} />
+        <Route path="/retired_job" element={<RetiredJobPage />} />
+        <Route path="/create_job" element={<CreateJobPage />} />
+        <Route path="/update_job/:id" element={<CreateJobPage />} />
+        <Route path="/dashboard_amm_apm" element={<DashboardAmmApmPage />} />
       </Routes>
 
       <Routes>

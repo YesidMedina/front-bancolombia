@@ -1,5 +1,5 @@
 export const Table = (props: any) => (
-  <thead className="text-xs  uppercase bg-gray-500  text-gray-100">
+  <thead className="text-xs bg-gray-500  text-gray-100">
     <tr>
       <th className="px-2">{props.titleE}</th>
       <th className="py-2 px-2">{props.title}</th>

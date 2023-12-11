@@ -1,222 +1,298 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { getAmmApm, deleteAmmApmId } from "../helpers/ServiceAmmApm";
-import { Amm_apm } from "../../interfaces/amm_apm";
+// import { ExcelFile, ExcelSheet, ExColumn } from "react-export-excel";
 import { useNavigate } from "react-router-dom";
 import { Table } from "../commons/Table";
+import { ModalView } from "./ModalView";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { getUserId } from "../helpers/ServiceUser";
+import jwt_decode from "jwt-decode";
+import {
+  getAmmApmId,
+  getAmmApmTrue,
+  updateAmmApmId,
+} from "../helpers/ServiceAmmApm";
+import { Amm_apm } from "../../interfaces/amm_apm";
 
 export const ArchiveApmHome = () => {
   const navigate = useNavigate();
   const [information, setInformation] = useState<Amm_apm[]>([]);
-  const [modal, setModal] = useState(false);
-  const [table, setTable] = useState<Amm_apm[]>([]);
-  const [search, setSearch] = useState("");
-  const [currenPage, setCurrenPage] = useState(0);
+  const [currenPage, setCurrenPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [modalMoreView, setModalMoreView] = useState<{
+    open: boolean;
+    info?: Object;
+  }>({ open: false, info: {} });
 
-  const loadAmmIm = async () => {
-    const respData = await getAmmApm();
-    setInformation(respData.data);
-    setTable(respData.data);
-  };
+  const [arrayInfo, setArrayInfo] = useState([]);
+  const [userInfo, setUserInfo] = useState();
 
-  const page = information.slice(currenPage, currenPage + 15);
-
-  const back = () => {
-    if (currenPage > 0) {
-      setCurrenPage(currenPage - 15);
+  const loadAmmApmTrue = async (page: any, searchTxt: any) => {
+    if (searchTxt !== "") {
+      const respData = await getAmmApmTrue(page, searchTxt);
+      setInformation([...respData.data.results]);
+    } else {
+      const respData = await getAmmApmTrue(page, "");
+      if (respData.data.next === null) {
+        setHasMore(false);
+      }
+      setInformation([...respData.data.results]);
     }
   };
 
-  const next = () => {
-    setCurrenPage(currenPage + 15);
+  const loadPagination = async (page: any) => {
+    const respData = await getAmmApmTrue(page, "");
+    if (respData.data.next === null) {
+      setHasMore(false);
+    }
+    setInformation([...information, ...respData.data.results]);
+  };
+
+  const userId = async () => {
+    const resp = localStorage.getItem("token");
+    const decode = jwt_decode(resp);
+    const respData = await getUserId(decode["id"]);
+    setUserInfo(respData.data.is_staff);
   };
 
   const handleChange = (e: any) => {
-    setSearch(e.target.value);
-    filter(e.target.value);
+    loadAmmApmTrue(1, e.target.value);
   };
 
-  const filter = (see: any) => {
-    const result = table.filter((element) => {
-      if (
-        element.service_manager
-          .toString()
-          .toLowerCase()
-          .includes(see.toLowerCase()) ||
-        element.name_device
-          .toString()
-          .toLowerCase()
-          .includes(see.toLowerCase()) ||
-        element.description
-          .toString()
-          .toLowerCase()
-          .includes(see.toLowerCase()) ||
-        element.metric_configuration
-          .toString()
-          .toLowerCase()
-          .includes(see.toLowerCase()) ||
-        element.ip_divice.includes(see.toLowerCase())
-      ) {
-        return element;
-      }
-    });
-    console.log(result);
-    setInformation(result);
+  const handleDelete = async (id: number, oc_order: any) => {
+    const resp = await getAmmApmId(id);
+    const order = resp.data.order_number_oc;
+    resp.data.status = false;
+    resp.data.order_number_oc = order.concat(", ", oc_order);
+
+    await updateAmmApmId(id, resp.data);
+    loadAmmApmTrue(currenPage, "");
   };
 
-  const handleDelete = async (id: number) => {
-    await deleteAmmApmId(id);
+  // const handleDeleteCheckbox = async (
+  //   infoToUpdate: Array<{}>,
+  //   oc_order: any
+  // ) => {
+  //   await updateSeveralAmmIm(infoToUpdate, oc_order);
+  // };
 
-    loadAmmIm();
-  };
-
-  const handleClick = (id: number) => {
+  const handleClick = (id: any) => {
     Swal.fire({
-      title: "Mosca pues...",
-      text: "Está seguro que desea eliminar este registro?... Ingresa la OC",
+      title: "Cuidado pues...",
+      text: `¿Está seguro que desea eliminar este registro ID ${id}?, Ingresa la OC`,
       icon: "error",
-      input: 'text',
+      input: "text",
       inputAttributes: {
-        autocapitalize: 'off'
+        autocapitalize: "off",
       },
+
       showDenyButton: true,
       denyButtonText: "No",
       confirmButtonText: "Si",
       confirmButtonColor: "red",
       denyButtonColor: "blue",
     }).then((response) => {
+      if (!response.value) {
+        return Swal.fire("Necesita ingresar la OC", "error");
+      }
+      // if (!response.isDenied) {
+      //   return Swal.fire("Error en el sistema", "error");
+      // }
       if (response.isConfirmed) {
-        Swal.fire("Parce ya se eliminó", "Siga en lo que estaba", "success");
-        handleDelete(id);
+        Swal.fire("Ya se eliminó", `Registro ID ${id}`, "success");
+        handleDelete(id, response.value);
+
+        // deleteCheckbox(response.value); // esto se debe de cambiar para otro boton aparte
       } else if (response.isDenied) {
-        Swal.fire("Ojo socio...", "No me asuste", "info");
+        return Swal.fire("Ojo!!...", "No me asuste", "info");
+      } else if (response.isDismissed) {
+        Swal.fire("Ocurrió un error inesperado", "error");
       } else {
-        Swal.fire("Error", "Oh!!, Algo no esperado", "error");
+        Swal.fire("Error de servidor", "error");
       }
     });
   };
+
+  // const deleteCheckbox = (oc_order: any) => {
+  //   handleDeleteCheckbox(arrayInfo, oc_order);
+  //   console.log(arrayInfo, oc_order);
+  // };
+
+  const clickCheckBox = (arrayInfo: any) => {
+    setArrayInfo((previousInfo) => [...previousInfo, arrayInfo]);
+    console.log(arrayInfo);
+  };
+
+  const reload = () => {
+    window.location.reload();
+  };
+
   useEffect(() => {
-    loadAmmIm();
+    loadPagination(currenPage);
+  }, [currenPage]);
+
+  useEffect(() => {
+    userId();
   }, []);
 
   return (
     <>
-      <div className="bg-yellow-100 bg-gradient-to-r from-gray-400">
-        <div className="relative w-1/2 mx-auto mt-4">
+      <div className="bg-emerald-600 h-auto dark:bg-gray-800">
+        <div className=" w-1/2 mx-auto mt-4 sticky ">
           <input
             type="search"
             id="search-dropdown"
-            className="block p-2.5 w-full z-20 text-sm text-gray-800 bg-gray-50 rounded-lg  border-2  border-gray-400 "
+            className="block p-2.5 w-full z-20 text-xs text-gray-800 bg-gray-50 rounded-lg  border-2  border-gray-400 "
             placeholder="Buscar por Servicio, Nombre dispositivo ó IP..."
-            value={search}
             onChange={handleChange}
           />
-        </div>
-        <div className="flex flex-col items-end sm:mr-12 mr-2 -mt-8">
-        <button className="bg-red-400 rounded-lg w-20 h-8 text-white"
-        onClick={() => handleDelete}
-        >Eliminar</button>
-        </div>
-
-       
-
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-2 sm:mx-12 ">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <Table
-              title1="Colección global"
-              title2="Filial"
-              title3="Servicio"
-              title4="Gestor"
-              title5="Descripción"
-              title6="IP"
-              title7="Correo"
-              title8="OC"
-            />
-            <tbody>
-              {page?.map((info) => {
-                return (
-                  <tr
-                    className="bg-white border-b  hover:bg-gray-300 text-gray-900"
-                    key={info.id}
-                  >
-                    <td className="px-2 py-2 truncate capitalize">
-                      {info.global_collection}
-                    </td>
-                    <td className="px-2 py-2 capitalize">{info.filial}</td>
-                    <td className="px-2 py-2 capitalize">
-                      {info.service_manager}
-                    </td>
-                    <td>
-                      <p className="px-2 py-2 w-80 truncate ...">
-                        {" "}
-                        {info.description}
-                      </p>
-                    </td>
-                    <td className="px-2 py-2 truncate capitalize">
-                      {info.gestor_broker}
-                    </td>
-                    <td className="px-2 py-2">{info.ip_divice}</td>
-                    <td className="px-2 py-2">{info.email}</td>
-                    <td className="px-2 py-2">{info.order_number_oc}</td>
-                    <td className="px-2 py-2 text-right">
-                      {/* <button
-                        onClick={() => setModal(true)}
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        Ver
-                        <Modal
-                          visible={modal}
-                          onClose={() => setModal(false)}
-                          onClick={`${info.id}`}
-                        />
-                      </button> */}
-                      <button
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                        onClick={() => navigate(`/update_apm/${info.id}`)}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                        onClick={() => handleClick(info.id)}
-                      >
-                        Eliminar
-                      </button>
-                      <div className="mr-4">
-                        <input
-                          id="link-checkbox"
-                          type="checkbox"
-                          value=""
-                          className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        />
-                       
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-
-          <div className=" p-12 relative flex flex-col items-center">
-            <button
-              className="w-28 mr-24  text-center py-2 bg-yellow-400
-              hover:bg-yellow-200 text-black rounded-lg absolute"
-              onClick={back}
-            >
-              Back
-            </button>
-
-            <button
-              className="w-28 ml-40 py-2 bg-yellow-400
-          hover:bg-yellow-200 text-black rounded-lg absolute"
-              onClick={next}
-            >
-              Next
-            </button>
+          <div className=" flex flex-col items-end  ">
+            <a onClick={reload} className="absolute -mt-8 mr-3.5">
+              X
+            </a>
           </div>
         </div>
+
+        <div>
+          {userInfo === true && (
+            <div className="flex flex-col items-end sm:mr-12 -mt-8">
+              <button
+                onClick={() =>
+                  handleClick(information.find((index) => index.id))
+                }
+                className="bg-red-400 rounded-lg w-20 h-8 text-white mr-8"
+              >
+                Eliminar
+              </button>
+            </div>
+          )}
+        </div>
+
+        <InfiniteScroll
+          dataLength={information.length}
+          next={() => setCurrenPage(currenPage + 1)}
+          hasMore={hasMore}
+          loader={<div>Loading</div>}
+        >
+          <div className=" overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-4">
+            <table className="overflow-y-auto w-full text-xs text-left text-gray-500 dark:text-gray-400">
+              <Table
+                titleE=""
+                title="ID"
+                title1="Colección global"
+                title2="Filial"
+                title3="Servicio"
+                title4="Gestor"
+                title5="Descripción"
+                title6="IP"
+                title7="Correo"
+                title8="OC"
+              />
+              <tbody>
+                {information?.map((info, index) => {
+                  return (
+                    <tr
+                      className="bg-white border-b  hover:bg-green-200 text-gray-900 dark:bg-gray-900 dark:text-gray-400"
+                      key={index}
+                    >
+                      {info.maintenance === true ? (
+                        <input className="w-2 h-2 ml-2 mt-3.5 bg-violet-500 rounded-lg" />
+                      ) : (
+                        <input className="w-2 h-2 ml-2 mt-3.5 bg-green-500 rounded-lg" />
+                      )}
+                      <td className="px-2 py-2 text-xs font-bold ">
+                        {info.id}
+                      </td>
+                      <td className="px-2 py-2 truncate capitalize">
+                        {info.global_collection}
+                      </td>
+                      <td>
+                        <p className="px-2 py-2 w-28 truncate ...">
+                          {" "}
+                          {info.filial}
+                        </p>
+                      </td>
+                      <td>
+                        <p className="px-2 py-2 w-28 truncate ...">
+                          {" "}
+                          {info.service_manager}
+                        </p>
+                      </td>
+                      <td>
+                        <p className="px-2 py-2 w-28 truncate ...">
+                          {" "}
+                          {info.gestor_broker}
+                        </p>
+                      </td>
+                      <td>
+                        <p className="px-2 py-2 w-28 truncate ...">{info.description} </p>
+                      </td>
+                      <td>
+                        <p className="px-2 py-2 w-28 truncate ...">
+                          {" "}
+                          {info.ip_divice}
+                        </p>
+                      </td>
+                      <td>
+                        <p className="px-2 py-2 w-28 truncate ...">
+                          {info.email}
+                        </p>
+                      </td>
+                      <td>
+                        <p className="px-2 py-2 w-28 truncate ...">
+                          {info.order_number_oc}
+                        </p>
+                      </td>
+                      <td className="px-2 py-2 text-right">
+                        <div>
+                          <button
+                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                            onClick={() =>
+                              setModalMoreView({ open: true, info })
+                            }
+                          >
+                            Ver
+                          </button>
+
+                          {userInfo === true && (
+                            <>
+                              <button
+                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
+                                onClick={() => navigate(`/update_apm/${info.id}`)}
+                              >
+                                Editar
+                              </button>
+                              <button
+                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
+                                onClick={() => handleClick(info.id)}
+                              >
+                                Eliminar
+                              </button>
+
+                              <input
+                                onClick={() => clickCheckBox(info)}
+                                id="link-checkbox"
+                                type="checkbox"
+                                value=""
+                                className="ml-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                              />
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </InfiniteScroll>
       </div>
+      <ModalView
+        open={modalMoreView.open}
+        onclose={() => setModalMoreView({ open: false, info: {} })}
+        info={modalMoreView.info}
+      />
     </>
   );
 };

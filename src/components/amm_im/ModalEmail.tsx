@@ -13,7 +13,7 @@ export const ModalEmail: React.FC<propType> = ({ open, onclose, info }) => {
         onClick={onclose}
       >
         <div
-          className={` rounded-lg shadow p-6 transition-all w-3/6 border-black border-4 dark:border-gray-300 bg-gray-400 dark:bg-gray-900
+          className={`rounded-lg shadow p-6 transition-all w-3/6 border-black border-2 dark:border-gray-300 bg-gray-400 dark:bg-gray-900
           ${open ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
           onClick={(e) => e.stopPropagation()}
         >

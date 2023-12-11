@@ -4,7 +4,7 @@ type propType = {
   info: any;
 };
 
-export const Modal: React.FC<propType> = ({ open, onclose, info }) => {
+export const ModalView: React.FC<propType> = ({ open, onclose, info }) => {
   return (
     <div className="w-full">
       <div
@@ -13,13 +13,13 @@ export const Modal: React.FC<propType> = ({ open, onclose, info }) => {
         onClick={onclose}
       >
         <div
-          className={` rounded-lg shadow p-6 transition-all w-11/12 border-black border-4 dark:border-gray-300 bg-gray-400 dark:bg-gray-900
-        ${open ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
+          className={`rounded-lg shadow p-6 transition-all w-11/12 border-black border-2 dark:border-gray-300 bg-gray-300 dark:bg-gray-900
+          ${open ? "scale-100 opacity-100" : "scale-110 opacity-0"}`}
           onClick={(e) => e.stopPropagation()}
         >
           <button
             className="absolute top-2 right-2 py-1 px-2 border border-neutral-200 rounded-md text-gray-400
-            bg-white hover:bg-gray-50 hover:text-gray-600"
+              bg-white hover:bg-gray-50 hover:text-gray-600"
             onClick={onclose}
           >
             x

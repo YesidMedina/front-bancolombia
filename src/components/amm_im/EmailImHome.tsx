@@ -13,6 +13,7 @@ import jwt_decode from "jwt-decode";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ModalEmail } from "./ModalEmail";
 import { getUserId } from "../helpers/ServiceUser";
+import { ModalCreateEmail } from "./ModalCreateEmail";
 
 export const EmailImHome = () => {
   const navigate = useNavigate();
@@ -22,6 +23,11 @@ export const EmailImHome = () => {
   const [hasMore, setHasMore] = useState(true);
   const [userInfo, setUserInfo] = useState();
   const [modalMoreView, setModalMoreView] = useState<{
+    open: boolean;
+    info?: Object;
+  }>({ open: false, info: {} });
+
+  const [modalCreate, setModalCreate] = useState<{
     open: boolean;
     info?: Object;
   }>({ open: false, info: {} });
@@ -92,15 +98,28 @@ export const EmailImHome = () => {
   }, []);
   return (
     <>
-      <div className="bg-yellow-100 bg-gradient-to-r h-auto from-gray-400 dark:bg-gray-600">
+      <div className="bg-gray-400 h-auto from-gray-400 dark:bg-gray-600">
         <div className="relative w-1/2 mx-auto mt-4">
           <input
             type="search"
             id="search-dropdown"
-            className="block p-2.5 w-full z-20 text-sm text-gray-800 bg-gray-50 rounded-lg border-2 border-gray-400 "
+            className="block p-2.5 w-full z-20 text-xs text-gray-800 bg-gray-50 rounded-lg border-2 border-gray-400 "
             placeholder="Buscar por Servicio, Nombre dispositivo ó IP..."
             onChange={handleChange}
           />
+        </div>
+
+        <div>
+          {userInfo === true && (
+            <div className="flex flex-col items-end sm:mr-12 -mt-8">
+              <button
+                onClick={() => setModalCreate({ open: true })}
+                className="bg-green-600 rounded-lg w-20 h-8 text-white mr-8 text-xs"
+              >
+                Crear
+              </button>
+            </div>
+          )}
         </div>
 
         <InfiniteScroll
@@ -109,7 +128,7 @@ export const EmailImHome = () => {
           hasMore={hasMore}
           loader={<div>...</div>}
         >
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-12">
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mx-16">
             <table className="w-full text-xs text-left text-gray-500 dark:text-gray-400">
               <Table
                 titleE="ID"
@@ -156,7 +175,7 @@ export const EmailImHome = () => {
                         </p>
                       </td>
 
-                      <td className="px-2 py-2 text-right">
+                      <td className="px-2 py-2 text-right w-40">
                         <button
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                           onClick={() => setModalMoreView({ open: true, info })}
@@ -167,9 +186,7 @@ export const EmailImHome = () => {
                           <>
                             <button
                               className="font-medium text-blue-600 dark:text-blue-500 hover:underline ml-2"
-                              onClick={() =>
-                                navigate(`/update_email/${info.id}`)
-                              }
+                              onClick={()=> navigate(`/update_email/${info.id}`)}
                             >
                               Editar
                             </button>
@@ -194,6 +211,12 @@ export const EmailImHome = () => {
         open={modalMoreView.open}
         onclose={() => setModalMoreView({ open: false, info: {} })}
         info={modalMoreView.info}
+      />
+
+      <ModalCreateEmail
+        open={modalCreate.open}
+        onclose={() => setModalCreate({ open: false, info: {} })}
+        id={modalCreate.info}
       />
     </>
   );

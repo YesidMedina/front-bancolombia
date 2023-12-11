@@ -1,23 +1,14 @@
-// import { useParams, useNavigate } from "react-router-dom";
-// import { FormEvent, useEffect, useState } from "react";
-// import { Amm_im } from "../../interfaces/amm_im";
-// import {
-//   createAmmIm,
-//   getAmmImId,
-//   updateAmmImId,
-// } from "../helpers/ServiceAmmIm";
-// import Swal from "sweetalert2";
-// import { toast } from "react-toastify";
-
+import { useParams} from "react-router-dom";
 
 
 export const Form = (props: any) => {
-  
 
+  const params = useParams();
+  
   return (
     <>
       <div className="sm:-mt-12 sm:flex sm:justify-center">
-        <a className="-mt-2 inline-flex items-center justify-center w-8 h-8 ml-8 overflow-hidden bg-red-200 rounded-full"></a>
+        <a className="-mt-2 inline-flex items-center justify-center w-8 h-8 ml-8 overflow-hidden bg-yellow-100 rounded-full"></a>
         <p className="text-xs">
           {props.res_fields}
         </p>
@@ -39,7 +30,7 @@ export const Form = (props: any) => {
                 <input
                   type="number"
                   className=" w-32 rounded border border-gray-500 bg-transparent px-3 py-1 text-black dark:text-gray-400"
-                  onChange={props.handleInputIdUser}
+                  onChange={props.handleInput}
                   name="id_user"
                   value={props.valueIdUser}
                   placeholder="ID usuario"
@@ -50,7 +41,7 @@ export const Form = (props: any) => {
               <div className="relative mb-4">
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400"
-                  onChange={props.handleInputTool}
+                  onChange={props.handleInput}
                   name="tool"
                   value={props.valueTool}
                   required
@@ -69,9 +60,9 @@ export const Form = (props: any) => {
               <div className="relative mb-4">
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400"
-                  onChange={handleInput}
+                  onChange={props.handleInput}
                   name="global_collection"
-                  value={info.global_collection}
+                  value={props.valueGlobalCollection}
                   required
                 >
                   <option value="" disabled selected>
@@ -104,9 +95,9 @@ export const Form = (props: any) => {
               <div className="relative mb-4">
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400"
-                  onChange={handleInput}
+                  onChange={props.handleInput}
                   name="filial"
-                  value={info.filial}
+                  value={props.valueFilial}
                   required
                 >
                   <option className="text-gray-300" value="" disabled selected>
@@ -127,9 +118,9 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className=" w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400  "
-                  onChange={handleInput}
+                  onChange={props.handleInput}
                   name="service_manager"
-                  value={info.service_manager}
+                  value={props.valueServiceManager}
                   placeholder="Service manager"
                   required
                 />
@@ -138,9 +129,9 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className=" w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400  "
-                  onChange={handleInput}
+                  onChange={props.handleInput}
                   name="sub_service"
-                  value={info.sub_service}
+                  value={props.valueSubservice}
                   placeholder="Sub-Service manager"
                 />
               </div>
@@ -148,9 +139,9 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
+                  onChange={props.handleInput}
                   name="monitor_resource"
-                  value={info.monitor_resource}
+                  value={props.valueMonitorResource}
                   placeholder="Monitor resource"
                   required
                 />
@@ -159,18 +150,18 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
+                  onChange={props.handleInput}
                   name="service_optional"
-                  value={info.service_optional}
+                  value={props.valueServiceOptional}
                   placeholder="Servicio opcional"
                 />
               </div>
               <div className="relative mb-4">
                 <textarea
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-4 text-black dark:text-gray-400 "
-                  onChange={handleInput}
+                  onChange={props.handleInput}
                   name="description"
-                  value={info.description}
+                  value={props.valueDescription}
                   placeholder="Descripción"
                   required
                 />
@@ -181,9 +172,9 @@ export const Form = (props: any) => {
               <div className="relative mb-4">
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400"
-                  onChange={handleInput}
+                  onChange={props.handleInput}
                   name="environment"
-                  value={info.environment}
+                  value={props.valueEnvironment}
                   required
                 >
                   <option value="" disabled selected>
@@ -198,19 +189,19 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.platform}
+                  onChange={props.handleInput}
+                  value={props.valuePlatform}
                   name="platform"
                   placeholder="Plataforma"
                   required
                 />
               </div>
 
-              <div className="bg-red-200 relative mb-4">
+              <div className="bg-yellow-100 relative mb-4">
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.rol}
+                  onChange={props.handleInput}
+                  value={props.valueRol}
                   name="rol"
                   placeholder="Rol"
                   required
@@ -218,19 +209,19 @@ export const Form = (props: any) => {
                   <option className="text-gray-300" value="" disabled selected>
                     Rol
                   </option>
-                  <option value="Plataforma Windows-Linux Bancolombia">
-                    Plataforma Windows-Linux Bancolombia
+                  <option value={props.valueRolOne}>
+                    {props.rolOne}
                   </option>
-                  <option value="Base de Datos">Base de Datos</option>
-                  <option value="Panoramica_Cliente">Panoramica_Cliente</option>
+                  <option value={props.valueRolTwo}> {props.rolTwo}</option>
+                  <option value={props.valueRolThree}> {props.rolThree}</option>
                 </select>
               </div>
               <div className="relative mb-4">
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.name_device}
+                  onChange={props.handleInput}
+                  value={props.valuesNameDevice}
                   name="name_device"
                   placeholder="Nombre dispositivo"
                   required
@@ -240,8 +231,8 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.ip_divice}
+                  onChange={props.handleInput}
+                  value={props.valueIp}
                   name="ip_divice"
                   placeholder="IP"
                   required
@@ -250,26 +241,23 @@ export const Form = (props: any) => {
               <div className="relative mb-4">
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400"
-                  onChange={handleInput}
+                  onChange={props.handleInput}
                   name="baseline"
-                  value={info.baseline}
+                  value={props.valueBaseline}
                   required
                 >
                   <option value="" disabled selected>
                     Linea base
                   </option>
-                  <option value="Windows">Windows</option>
-                  <option value="Linux"> Linux </option>
-                  <option value="Pseries">Pseries</option>
-                  <option value="Solaris">Solaris</option>
-                  <option value="N/A">N/A</option>
+                  <option value={props.valueBaseline}>{props.baseline}</option>
+                  
                 </select>
               </div>
-              <div className="bg-red-200 relative mb-4">
+              <div className="bg-yellow-100 relative mb-4">
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.item_configuration}
+                  onChange={props.handleInput}
+                  value={props.valueItemConfiguration}
                   name="item_configuration"
                   placeholder="Tipo ITEM configuración"
                   required
@@ -277,16 +265,16 @@ export const Form = (props: any) => {
                   <option className="text-gray-300" value="" disabled selected>
                     Tipo item de configuración
                   </option>
-                  <option value="%Utilizacion">%Utilizacion</option>
-                  <option value="Disponibilidad">Disponibilidad</option>
-                  <option value="Disponibilidad">Busy</option>
+                  <option value={props.valueItemConfigurationOne}>{props.itemConfigurationOne}</option>
+                  <option value={props.valueItemConfigurationTwo}>{props.itemConfigurationTwo}</option>
+                  <option value={props.valueItemConfigurationThree}>{props.itemConfigurationThree}</option>
                 </select>
               </div>
-              <div className="bg-red-200 relative mb-4">
+              <div className="bg-yellow-100 relative mb-4">
                 <select
                   className=" w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.ic_configuration}
+                  onChange={props.handleInput}
+                  value={props.ValueIcConfiguration}
                   name="ic_configuration"
                   placeholder="ITEM configuración"
                   required
@@ -295,10 +283,17 @@ export const Form = (props: any) => {
                     Item configuracion
                   </option>
 
-                  <option value="CPU">CPU</option>
-                  <option value="Memoria Física">Memoria Física</option>
-                  <option value="Disco Lógico">Disco Lógico</option>
-                  <option value="Disco Lógico">Watch-Memoria-</option>
+                  <option value={props.valueConfigurationOne}>{props.icConfigurationOne}</option>
+                  <option value={props.valueConfigurationTwo}>{props.icConfigurationTwo}</option>
+                  <option value={props.valueConfigurationThree}>{props.icConfigurationThree}</option>
+                  <option value={props.valueConfigurationFour}>{props.icConfigurationFour}</option>
+                  <option value={props.valueConfigurationFive}>{props.icConfigurationFive}</option>
+                  <option value={props.valueConfigurationSix}>{props.icConfigurationSix}</option>
+                  <option value={props.valueConfigurationSeven}>{props.icConfigurationSeven}</option>
+                  <option value={props.valueConfigurationEight}>{props.icConfigurationEight}</option>
+                  <option value={props.valueConfigurationNine}>{props.icConfigurationNine}</option>
+                  <option value={props.valueConfigurationThen}>{props.icConfigurationThen}</option>
+                  <option value={props.valueConfiguration}>{props.icConfiguration}</option>
                 </select>
               </div>
 
@@ -306,8 +301,8 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.alert_generation}
+                  onChange={props.handleInput}
+                  value={props.valueAlert}
                   name="alert_generation"
                   placeholder="Estado generación de alerta"
                   required
@@ -317,8 +312,8 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.intervalo}
+                  onChange={props.handleInput}
+                  value={props.valueIntervalo}
                   name="intervalo"
                   placeholder="Intervalo (Minutos)"
                   required
@@ -331,8 +326,8 @@ export const Form = (props: any) => {
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2  text-black dark:text-gray-400"
                   placeholder="Acción"
-                  onChange={handleInput}
-                  value={info.action}
+                  onChange={props.handleInput}
+                  value={props.valueAction}
                   name="action"
                   required
                 >
@@ -357,19 +352,19 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.alert_hours}
+                  onChange={props.handleInput}
+                  value={props.valueAlertHours}
                   name="alert_hours"
                   placeholder="Horario de alertamiento"
                   required
                 />
               </div>
 
-              <div className="bg-red-200 relative mb-4">
+              <div className="bg-yellow-100 relative mb-4">
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.major}
+                  onChange={props.handleInput}
+                  value={props.valueMajor}
                   name="major"
                   placeholder="Mayor"
                   required
@@ -378,19 +373,19 @@ export const Form = (props: any) => {
                     Mayor
                   </option>
 
-                  <option value=">80%=60min.">&gt;80%=60min.</option>
-                  <option value=">90%=30min.">&gt;90%=30min.</option>
-                  <option value=">28GB">&gt;28GB</option>
-                  <option value=">85%=30min.">&gt;85%=30min.</option>
-                  <option value="N/A">N/A</option>
+                  <option value={props.valueMajorOne}>{props.majorOne}</option>
+                  <option value={props.valueMajorTwo}>{props.majorTwo}</option>
+                  <option value={props.valueMajorThree}>{props.majorThree}</option>
+                  <option value={props.valueMajorFour}>{props.majorFour}</option>
+                  <option value={props.valueMajorFive}>{props.majorFive}</option>
                 </select>
               </div>
 
-              <div className="bg-red-200 relative mb-4">
+              <div className="bg-yellow-100 relative mb-4">
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.critical}
+                  onChange={props.handleInput}
+                  value={props.valueCritical}
                   name="critical"
                   placeholder="Critical"
                   required
@@ -399,14 +394,14 @@ export const Form = (props: any) => {
                     Critical
                   </option>
 
-                  <option value=">90%=10min.">&gt;90%=10min.</option>
-                  <option value=">90%=20min.">&gt;90%=20min.</option>
-                  <option value=">90%=30min.">&gt;90%=30min.</option>
-                  <option value=">95%=30min.">&gt;95%=30min.</option>
-                  <option value=">85%=10min.">&gt;85%=10min.</option>
-                  <option value=">30GB">&gt;30GB</option>
-                  <option value=">85%=30min.">&gt;85%=30min.</option>
-                  <option value="N/A">N/A</option>
+                  <option value={props.valueCriticalOne}>{props.criticalOne}</option>
+                  <option value={props.valueCriticalTwo}>{props.criticalTwo}</option>
+                  <option value={props.valueCriticalThree}>{props.criticalThree}</option>
+                  <option value={props.valueCriticalFour}>{props.criticalFour}</option>
+                  <option value={props.valueCriticalFive}>{props.criticalFive}</option>
+                  <option value={props.valueCriticalSix}>{props.criticalSix}</option>
+                  <option value={props.valueCriticalSeven}>{props.criticalSeven}</option>
+                  <option value={props.valueCriticalEight}>{props.criticalEight}</option>
                 </select>
               </div>
 
@@ -414,8 +409,8 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.email}
+                  onChange={props.handleInput}
+                  value={props.valueEmail}
                   name="email"
                   placeholder="Envio de correo"
                   required
@@ -426,8 +421,8 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.impact}
+                  onChange={props.handleInput}
+                  value={props.valueImpact}
                   name="impact"
                   placeholder="Impacto de configuración"
                   required
@@ -438,8 +433,8 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.special_rule}
+                  onChange={props.handleInput}
+                  value={props.valueSpecialRule}
                   name="special_rule"
                   placeholder="Regla especial"
                   required
@@ -450,8 +445,8 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.details}
+                  onChange={props.handleInput}
+                  value={props.valueDetails}
                   name="details"
                   placeholder="Detalle"
                   required
@@ -462,8 +457,8 @@ export const Form = (props: any) => {
                 <select
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2  text-black dark:text-gray-400"
                   placeholder="Spectrum/SOI"
-                  onChange={handleInput}
-                  value={info.spectrum_soi}
+                  onChange={props.handleInput}
+                  value={props.valueSpectrum}
                   name="spectrum_soi"
                   required
                 >
@@ -479,8 +474,8 @@ export const Form = (props: any) => {
                 <input
                   type="text"
                   className="w-full rounded border border-gray-500 bg-transparent px-3 py-2 text-black dark:text-gray-400 "
-                  onChange={handleInput}
-                  value={info.order_number_oc}
+                  onChange={props.handleInput}
+                  value={props.valueOC}
                   name="order_number_oc"
                   placeholder="Orden de cambio"
                   required
@@ -494,8 +489,8 @@ export const Form = (props: any) => {
               <label className="relative inline-flex items-center mr-5 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={info.maintenance}
-                  onChange={handleInput}
+                  checked={props.maintenance}
+                  onChange={props.handleInput}
                   name="maintenance"
                   className="sr-only peer"
                 />
@@ -516,7 +511,7 @@ export const Form = (props: any) => {
             </button>
           ) : (
             <button
-              type="submit"
+              type="button"
               className="text-black bg-yellow-400 hover:bg-yellow-300 py-2  rounded-lg text-sm px-5 .5 mx-auto"
             >
               Guardar

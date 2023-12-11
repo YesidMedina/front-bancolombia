@@ -9,6 +9,7 @@ export const ChatGptPage = () => {
         title="CHAT OPENAI"
         image={Logo}
         catalogue="Catálogo"
+        linkCatalogue= '/catalogo'
         hour
         clouse="Cerrar sesión"
         menu1="Este es tu espacio de inteligencia artificial, donde puedes aclarar tus dudas de monitoreo y tecnología, Suerte!!"

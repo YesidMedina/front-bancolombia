@@ -44,7 +44,7 @@ export const getEmailAmmImId = async (id: any) => {
 };
 
 export const createEmailAmmIm = async (email: Email) => {
-    return await axios.post(`${API}/email`, email);
+    return await axios.post(`${API}/email_create`, email);
 };
 
 export const updateEmailAmmImId = async (id: any, email: Email) => {

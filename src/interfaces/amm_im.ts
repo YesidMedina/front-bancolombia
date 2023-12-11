@@ -14,7 +14,7 @@ export interface Amm_im {
   id_user: number | string ;
   impact: string;
   intervalo: string;
-  ip_divice: string;
+  ip_divice: string | number;
   item_configuration: string;
   major: string;
   monitor_resource: string;
